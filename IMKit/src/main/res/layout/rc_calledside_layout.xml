@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#141414">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
+        >
+
+        <LinearLayout
+            android:id="@+id/rc_voip_called_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <Button
+                android:id="@+id/refuse_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rc_btn_refuse_selector"
+                android:onClick="doRefuse"
+                android:textSize="16sp"
+                android:text="拒绝"
+                android:textColor="@android:color/white"/>
+
+            <Button
+                android:id="@+id/answer_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/rc_btn_answer_selector"
+                android:onClick="doYes"
+                android:textSize="16sp"
+                android:text="应答"
+                android:layout_weight="1"
+                android:textColor="@android:color/white"/>
+            <!-- 结束通话    隐藏按钮 -->
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/call_finish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rc_btn_over_selector"
+            android:onClick="doFinishChat"
+            android:textSize="16sp"
+            android:text="结束"
+            android:textColor="@android:color/white"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/user_photo_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="71dp"
+        >
+
+        <io.rong.imkit.widget.AsyncImageView
+            android:id="@+id/user_photo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:RCDefDrawable="@drawable/rc_ic_portrait_voip"
+            android:src="@drawable/rc_ic_portrait_voip"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_photo_container"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="24dp"
+        android:text="张三"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/calling_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
+        android:text="来电话了"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"/>
+    <!-- 静音/免提  控制界面   隐藏这个控件 -->
+
+    <LinearLayout
+        android:id="@+id/vioce_control_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/calling_state"
+        android:layout_marginTop="70dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/sound_off_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/rc_btn_sound_off_selector"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sound_off_id"
+                android:layout_centerHorizontal="true"
+                android:text="静音"
+                android:textColor="#8b8b8b"
+                android:padding="5dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/hands_off_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/rc_btn_hands_free_selector"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/hands_off_id"
+                android:layout_centerHorizontal="true"
+                android:text="免提"
+                android:textColor="#8b8b8b"
+                android:padding="5dp"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/mask_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88000000"
+        android:clickable="true"
+        android:visibility="gone"/>
+</RelativeLayout>

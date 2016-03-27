@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hechao.chat">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:name=".App"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+
+        </activity>
+
+        <activity android:name=".AddFriendActivity"></activity>
+
+
+        <activity android:name=".FriendListActivity"></activity>
+        <activity android:name=".ConversationAcivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="com.hechao.chat"
+                    android:pathPrefix="/conversation"
+                    android:scheme="rong" />
+
+            </intent-filter>
+        </activity>
+
+
+        <activity android:name=".LoginActivity">
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+
+
+
+        <activity android:name=".ConversationListActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+
+                <data
+
+                    android:host="com.hechao.chat"
+                    android:pathPrefix="/conversationlist"
+                    android:scheme="rong"
+                    ></data>
+
+            </intent-filter>
+
+        </activity>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<io.rong.imkit.model.LinkTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="@style/RCTheme.Message.TextView"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:autoLink="all"
+    android:gravity="center_vertical|left"
+    android:maxWidth="236dp" />

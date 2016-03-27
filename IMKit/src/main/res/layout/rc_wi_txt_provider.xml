@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:background="@drawable/rc_bg_editinput"
+    android:layout_width="match_parent">
+
+    <RelativeLayout
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@id/rc_frame"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@android:id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/rc_ic_smiley" />
+
+            <Button
+                android:id="@android:id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="14dp"
+                android:layout_gravity="center"
+                android:includeFontPadding="false"
+                android:textColor="@android:color/white"
+                android:background="@drawable/rc_btn_send"
+                android:text="@string/rc_input_send"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_width="0px"
+            android:layout_height="0px"/>
+
+        <EditText
+            android:id="@android:id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:maxLines="4"
+            android:layout_toLeftOf="@id/rc_frame"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:textColor="#353535"
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent" />
+    </RelativeLayout>
+
+
+</FrameLayout>

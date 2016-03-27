@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="rc_conversation_item_name_size">16sp</dimen>
+    <dimen name="rc_conversation_item_data_size">14sp</dimen>
+    <dimen name="rc_message_send_status_image_size">17dp</dimen>
+</resources>

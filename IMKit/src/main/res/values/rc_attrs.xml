@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AsyncImageView">
+
+        <attr name="RCMinShortSideSize" format="dimension"/>
+        <attr name="RCCornerRadius" format="dimension"/>
+
+        <attr name="RCShape">
+            <flag name="square" value="0" />
+            <flag name="circle" value="1" />
+        </attr>
+
+        <attr name="RCDefDrawable" format="reference" />C
+
+    </declare-styleable>
+
+    <declare-styleable name="InputView">
+        <attr name="RCStyle">
+            <enum name="SCE" value="0x123" />
+            <enum name="CES" value="0x231" />
+            <enum name="ECS" value="0x321" />
+            <enum name="CSE" value="0x213" />
+            <enum name="SC" value="0x120" />
+            <enum name="CS" value="0x21" />
+            <enum name="EC" value="0x320" />
+            <enum name="CE" value="0x023" />
+            <enum name="C" value="0x020" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="RCViewFlow">
+        <attr name="RCSideBuffer" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="RCCircleFlowIndicator">
+        <attr name="RCActiveColor" format="color" />
+        <attr name="RCInactiveColor" format="color" />
+        <attr name="RCRadius" format="dimension" />
+        <attr name="RCSpacing" format="dimension" />
+        <attr name="RCCentered" format="boolean" />
+        <attr name="RCFadeOut" format="integer" />
+        <attr name="RCInactiveType">
+            <flag name="RCStroke" value="0" />
+            <flag name="RCFill" value="1" />
+        </attr>
+        <attr name="RCActiveType">
+            <flag name="RCStroke" value="0" />
+            <flag name="RCFill" value="1" />
+        </attr>
+        <attr name="RCSnap" format="boolean" />
+
+    </declare-styleable>
+</resources>

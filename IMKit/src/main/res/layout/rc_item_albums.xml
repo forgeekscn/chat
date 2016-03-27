@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="240dp"
+    android:layout_height="120dp" >
+
+    <io.rong.imkit.widget.AsyncImageView
+        android:clickable="false"
+        android:id="@id/rc_icon"
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"/>
+
+    <CheckBox
+        style="@style/custom_checkbox"
+        android:button="@null"
+        android:id="@id/rc_checkbox"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:checked="false" />
+
+</FrameLayout>

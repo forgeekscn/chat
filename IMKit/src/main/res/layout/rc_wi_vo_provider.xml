@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Button
+        android:id="@android:id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textSize="14dp"
+        android:padding="4dp"
+        android:includeFontPadding="false"
+        android:textColor="@color/rc_text_voice"
+        android:background="@drawable/rc_btn_voice"
+        android:text="@string/rc_input_voice" />
+</merge>

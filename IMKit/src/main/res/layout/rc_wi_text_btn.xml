@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/button1"
+    android:layout_width="40dp"
+    android:layout_height="34dp"
+    android:textSize="14dp"
+    android:layout_gravity="center"
+    android:includeFontPadding="false"
+    android:textColor="@android:color/white"
+    android:background="@drawable/rc_btn_send"
+    android:text="@string/rc_input_send"
+    android:visibility="gone" />

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 设置聊天室一次拉取消息数目 -->
+    <integer name="rc_chatroom_first_pull_message_count">10</integer>
+
+    <!-- 设置在会话列表或会话页面是否显示“连接状态”的提示 -->
+    <bool name="rc_is_show_warning_notification">true</bool>
+
+    <!-- 设置未听的语音消息，是否连续播放 -->
+    <bool name="rc_play_audio_continuous">true</bool>
+
+    <!-- 设置已读回执 -->
+    <bool name="rc_read_receipt">true</bool>
+
+    <!-- 进入客服会话，机器人模式下，弹出评价菜单超时时间(单位：秒)-->
+    <!-- 设置为 0 时，任何时候离开客服会话时，都会弹出评价菜单-->
+    <integer name="rc_custom_service_evaluation_interval">60</integer>
+</resources>

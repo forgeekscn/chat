@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:minHeight="45dp"
+                android:padding="10dp"
+                android:layout_gravity="center_vertical">
+
+
+    <io.rong.imkit.widget.AsyncImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/portrait"
+        android:layout_gravity="center_vertical"
+        app:RCDefDrawable="@drawable/rc_ic_def_msg_portrait"
+        />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="40dp"
+        android:id="@+id/name"/>
+</RelativeLayout>
