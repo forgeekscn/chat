@@ -14,6 +14,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import cz.msebera.android.httpclient.Header;
 
 /**
+ * 添加好友列表
  * Created by Administrator on 2016/3/27.
  */
 public class AddFriendActivity extends Activity {

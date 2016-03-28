@@ -6,8 +6,9 @@ import android.support.v7.app.ActionBarActivity;
 import io.rong.imkit.RongIM;
 
 /**
- * Created by Administrator on 2016/3/27.
+ * 会话列表
  */
+
 public class ConversationListActivity extends ActionBarActivity {
 
     @Override

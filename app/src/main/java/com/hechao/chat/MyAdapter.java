@@ -12,8 +12,11 @@ import android.widget.Toast;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/3/27.
+ * 会话列表 适配器
+ *
  */
+
+
 public class MyAdapter extends BaseAdapter {
 
     List<String> friendList;

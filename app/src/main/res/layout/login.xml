@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/login"
             android:clickable="true"
-            android:text="login"
+            android:text="登陆"
             android:layout_alignParentLeft="true"
             android:textSize="20dp"
             android:textColor="#ffffff" />
@@ -38,11 +38,48 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/register"
-            android:text="register"
+            android:text="注册"
             android:clickable="true"
             android:textSize="20dp"
             android:layout_alignParentRight="true"
             android:textColor="#ffffff" />
+
+        <LinearLayout
+            android:layout_below="@id/register"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:id="@+id/phone"
+                android:hint="手机号码" />
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/getCode"
+                android:layout_weight="3"
+                android:text="获取"
+
+
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:id="@+id/code"
+
+                android:hint="验证码"
+
+                />
+
+
+        </LinearLayout>
 
     </RelativeLayout>
 </LinearLayout>

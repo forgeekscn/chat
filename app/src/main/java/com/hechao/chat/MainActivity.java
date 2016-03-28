@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
@@ -20,11 +23,84 @@ import io.rong.imlib.model.UserInfo;
 
 public class MainActivity extends Activity {
 
+    @InjectView(R.id.profile)
+    Button profile;
+    @InjectView(R.id.conversationlist)
+    Button conversationList;
+    @InjectView(R.id.btn)
+    Button button;
+    @InjectView(R.id.getList)
+    Button getList;
+    @InjectView(R.id.add)
+    Button addFriend;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //butterKnife注册
+        ButterKnife.inject(this);
+
+        //RongIM登录
+        connect();
+
+    }
+
+    /**
+     * 打开主页
+     */
+    @OnClick(R.id.profile)
+    public void profile() {
+        Intent intent = new Intent(MainActivity.this, UploadPicActivity.class);
+        startActivity(intent);
+    }
+
+
+    /**
+     * 打开会话列表
+     */
+
+    @OnClick(R.id.conversationlist)
+    public void getList() {
+        RongIM.getInstance().startConversationList(MainActivity.this);
+    }
+
+
+    /**
+     * 打开测试对话框
+     */
+    @OnClick(R.id.btn)
+    public void testConversation() {
+        if (RongIM.getInstance() != null) {
+            RongIM.getInstance().startPrivateChat(MainActivity.this, "1275", "hello");
+        }
+    }
+
+
+    /**
+     * 打开好友列表
+     */
+    @OnClick(R.id.getList)
+    void getFriendList1() {
+        Intent intent = new Intent(MainActivity.this, FriendListActivity.class);
+        startActivity(intent);
+    }
+
+
+    /**
+     * 添加好友
+     */
+    @OnClick(R.id.add)
+    public void addFriend() {
+        Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * RongIM登录
+     */
+    private void connect() {
         String token = App.token;
         if (App.isLogin) {
             RongIM.connect(token, new RongIMClient.ConnectCallback() {
@@ -46,70 +122,24 @@ public class MainActivity extends Activity {
                 }
             });
 
-            RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
-                @Override
-                public UserInfo getUserInfo(String s) {
-                    UserInfo userInfo = new UserInfo(s, s, Uri.parse("http://img.ltn.com.tw/Upload/ent/page/800/2015/04/03/phpHOkTWG.jpg"));
-                    return userInfo;
-                }
-            }, false);
+//            RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+//                @Override
+//                public UserInfo getUserInfo(String s) {
+//                    UserInfo userInfo = new UserInfo(s, s, Uri.parse("http://img.ltn.com.tw/Upload/ent/page/800/2015/04/03/phpHOkTWG.jpg"));
+//                    return userInfo;
+//                }
+//            }, false);
 
         }
-
-        findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AddFriendActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-
-        Button getlist = (Button) findViewById(R.id.getList);
-        getlist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, FriendListActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-
-        Button button = (Button) findViewById(R.id.btn);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (RongIM.getInstance() != null) {
-
-                    RongIM.getInstance().startPrivateChat(MainActivity.this, "1275", "hello");
-
-                }
-            }
-        });
-
-
-
-
-
-        Button conversationList= (Button) findViewById(R.id.conversationlist);
-        conversationList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                RongIM.getInstance().startConversationList(MainActivity.this);
-            }
-
-        });
-
-
-
-
-
     }
 
 
+    /**
+     * 菜单处理
+     *
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -131,4 +161,6 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

@@ -19,7 +19,7 @@ public class App extends Application {
 
 
 
-        
+
         RongIM.init(this);
 
     }

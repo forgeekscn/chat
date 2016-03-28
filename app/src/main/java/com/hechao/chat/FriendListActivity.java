@@ -17,16 +17,25 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.InjectView;
+import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
 import io.rong.imkit.RongIM;
 
+
 /**
- * Created by Administrator on 2016/3/27.
+ * 好友列表
  */
+
 public class FriendListActivity extends Activity {
 
     List<String> friendList = new ArrayList<String>();
+
+    @InjectView(R.id.friendlist)
     ListView listView;
+
+    @InjectView(R.id.refresh)
+    Button refresh;
 
     MyAdapter myAdapter;
 
@@ -34,35 +43,26 @@ public class FriendListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.friendlist);
 
-        listView = (ListView) findViewById(R.id.friendlist);
         refreshFriendList();
         myAdapter = new MyAdapter(friendList, FriendListActivity.this);
         listView.setAdapter(myAdapter);
-
-        final Button refresh= (Button) findViewById(R.id.refresh);
-        refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshFriendList();
-            }
-        });
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String target= (String) listView.getAdapter().getItem(position);
-                RongIM.getInstance().startPrivateChat(FriendListActivity.this,target,null);
+                String target = (String) listView.getAdapter().getItem(position);
+                RongIM.getInstance().startPrivateChat(FriendListActivity.this, target, null);
             }
         });
 
 
-
-
     }
 
-
-
+    @OnClick(R.id.refresh)
+    void refresh() {
+        refreshFriendList();
+    }
 
 
     private void refreshFriendList() {
@@ -80,7 +80,7 @@ public class FriendListActivity extends Activity {
                     JSONArray array = new JSONArray(response);
                     for (int i1 = 0; i1 < array.length(); i1++) {
                         friendList.add((String) array.get(i1));
-                        Log.e("hechao",(String) array.get(i1));
+                        Log.e("hechao", (String) array.get(i1));
                     }
 
                     myAdapter.notifyDataSetChanged();
@@ -88,6 +88,7 @@ public class FriendListActivity extends Activity {
                     e.printStackTrace();
                 }
             }
+
             @Override
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
                 Log.e("hechao", "friendlist is not inited ");
@@ -97,21 +98,12 @@ public class FriendListActivity extends Activity {
     }
 
 
-
-
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
         refreshFriendList();
 
     }
-
-
-
-
 
 
 }

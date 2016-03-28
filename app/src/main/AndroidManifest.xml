@@ -2,14 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hechao.chat">
 
+    <!-- 权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+
+    <!-- 应用 -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:name=".App"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+
+        <!-- 主界面 -->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -21,12 +30,17 @@
 
         </activity>
 
+
+        <!--添加好友-->
         <activity android:name=".AddFriendActivity"></activity>
 
-
+        <!--好友列表-->
         <activity android:name=".FriendListActivity"></activity>
+
+        <!--对话-->
         <activity android:name=".ConversationAcivity">
             <intent-filter>
+                <!-- 关联融云sdk 实现对话 -->
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -39,6 +53,7 @@
         </activity>
 
 
+        <!--注册-->
         <activity android:name=".LoginActivity">
 
 
@@ -51,23 +66,27 @@
         </activity>
 
 
-
-
+        <!--对话列表-->
         <activity android:name=".ConversationListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"></action>
                 <category android:name="android.intent.category.DEFAULT"></category>
 
+                <!--集成融云sdk 实现会话列表-->
                 <data
 
                     android:host="com.hechao.chat"
                     android:pathPrefix="/conversationlist"
-                    android:scheme="rong"
-                    ></data>
+                    android:scheme="rong"></data>
 
             </intent-filter>
 
         </activity>
+
+
+
+        <activity android:name=".UploadPicActivity"></activity>
+
 
     </application>
 

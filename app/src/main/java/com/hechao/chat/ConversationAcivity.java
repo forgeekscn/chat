@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
 /**
+ * 私聊窗口
  * Created by Administrator on 2016/3/25.
  */
 public class ConversationAcivity extends ActionBarActivity {
