@@ -89,7 +89,7 @@ public class UploadPicActivity extends Activity {
         params.add("img", img);
 
 
-        client.post("http://10.176.137.250/chat/upload.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://10.176.191.213/chat/upload.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(UploadPicActivity.this, "success", Toast.LENGTH_SHORT).show();

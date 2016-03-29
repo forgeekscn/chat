@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -61,6 +62,10 @@ public class LoginActivity extends Activity {
 
     private SmsObserver observer;
 
+
+//    @InjectView(R.id.gifView2)
+//    GifView gifView2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,14 +74,29 @@ public class LoginActivity extends Activity {
         ButterKnife.inject(this);
 
 
-        //短信验证码处理
-        SMSAPIDeal();
+        //gif图片显示
+//        drawGIF();
 
-        //验证码处理
-        dealCode();
+        //短信处理
+//        SMSAPIDeal();
 
 
     }
+
+
+    /**
+     * gif图片显示
+     */
+//    private void drawGIF() {
+//        Log.e("hechao","begin draw gif...");
+//        try {
+//            InputStream inputStream = getAssets().open("xinhengjieyi.gif");
+//            gifView2.setGifStream(inputStream);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     /**
@@ -88,9 +108,8 @@ public class LoginActivity extends Activity {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.put("apikey", "34ca0f7732b7f0718ad418e3e7d6ed08");
-        params.put("mobile", "13720308660");
-        params.put("code", "110");
-        params.put("text", "code is :");
+        params.put("mobile", phone.getText().toString());
+        params.put("text", "【纺大阳光】你好，请保存此验证码123456，作为入场的唯一凭证，请妥善保管！");
         String url = "https://sms.yunpian.com/v1/sms/send.json";
 
         Log.e("hechao", "begin sms...");
@@ -98,7 +117,11 @@ public class LoginActivity extends Activity {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
 
+                String response=new String(bytes) ;
+                JSONObject jsonObject= new JSONObject() ;
+
                 Log.e("hechao", "SMSresponse:" + new String(bytes));
+
             }
 
             @Override
@@ -106,6 +129,7 @@ public class LoginActivity extends Activity {
                 Log.e("hechao", "error");
             }
         });
+
 
 
 //
@@ -130,11 +154,11 @@ public class LoginActivity extends Activity {
     /**
      * 验证码处理
      */
-    private void dealCode() {
-        getCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @OnClick(R.id.getCode)
+    public  void dealCode() {
 
+        SMSAPIDeal();
+        Log.e("hechao","begin deal with code...");
                 //handler初始化
                 mHandler = new Handler() {
                     @Override
@@ -154,9 +178,6 @@ public class LoginActivity extends Activity {
                 getContentResolver().registerContentObserver(uri, true, observer);
 
             }
-        });
-    }
-
 
     @Override
     protected void onPause() {
@@ -178,7 +199,7 @@ public class LoginActivity extends Activity {
 //                    RequestParams params = new RequestParams();
 //                    params.add("username", user_name);
 //                    params.add("password", pass_word);
-            String url = "http://10.176.137.250/chat/reg.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
+            String url = "http://10.176.191.213/chat/reg.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
             Log.e("hechao", url);
             client.get(url, new AsyncHttpResponseHandler() {
                 @Override
@@ -236,7 +257,7 @@ public class LoginActivity extends Activity {
         } else {
 
             AsyncHttpClient client = new AsyncHttpClient();
-            String url = "http://10.176.137.250/chat/login.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
+            String url = "http://10.176.191.213/chat/login.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
             Log.e("hechao", url);
             client.get(url, new AsyncHttpResponseHandler() {
                 @Override

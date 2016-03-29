@@ -42,7 +42,7 @@ public class SmsObserver extends ContentObserver {
 //                    return;
 //                }
 
-                Pattern pattern = Pattern.compile("(\\d{3})");
+                Pattern pattern = Pattern.compile("(\\d{6})");
                 Matcher matcher = pattern.matcher(body);
 
                 if (matcher.find()) {

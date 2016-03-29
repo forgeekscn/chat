@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -48,6 +49,7 @@
             android:layout_below="@id/register"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/linearlayout"
             android:orientation="horizontal">
 
             <EditText
@@ -80,6 +82,26 @@
 
 
         </LinearLayout>
+
+
+
+        <com.hechao.chat.GifView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            app:src="@drawable/disuxiaoshuo"
+            android:layout_below="@id/linearlayout"
+            />
+
+
+        <!--<com.hechao.chat.GifView-->
+            <!--android:id="@+id/gifView2"-->
+            <!--android:layout_below="@id/linearlayout"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:background="#888"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="150dp"-->
+            <!--app:src="@drawable/disuxiaoshuo" />-->
+
 
     </RelativeLayout>
 </LinearLayout>

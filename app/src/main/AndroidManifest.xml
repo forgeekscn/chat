@@ -13,6 +13,7 @@
     <!-- 应用 -->
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/ic_launcher"
         android:name=".App"
         android:label="@string/app_name"
