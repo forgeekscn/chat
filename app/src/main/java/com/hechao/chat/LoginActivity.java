@@ -112,7 +112,7 @@ public class LoginActivity extends Activity {
 //                key
 
         //加油站
-        juheOil();
+//        juheOil();
 
 
         //百度map init

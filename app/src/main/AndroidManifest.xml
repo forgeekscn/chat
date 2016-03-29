@@ -76,6 +76,10 @@
         </activity>
 
 
+
+        <!--baiduMap-->
+        <activity android:name=".BaiduMapActivity"></activity>
+
         <!--注册-->
         <activity android:name=".LoginActivity">
 
