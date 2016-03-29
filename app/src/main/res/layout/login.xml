@@ -87,12 +87,41 @@
 
         <com.hechao.chat.GifView
             android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_height="100dp"
             app:src="@drawable/disuxiaoshuo"
             android:layout_below="@id/linearlayout"
+            android:id="@+id/gif"
             />
 
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView"
+            android:layout_below="@id/gif">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/baidumap"
+                    android:text="查看百度地图"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sensor"
+                    />
+
+
+
+                </LinearLayout>
+
+            </ScrollView>
         <!--<com.hechao.chat.GifView-->
             <!--android:id="@+id/gifView2"-->
             <!--android:layout_below="@id/linearlayout"-->

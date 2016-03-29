@@ -6,11 +6,19 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.0'
+//        classpath 'com.android.databinding:dataBinder:1.0-rc0'
 
+//        Error:(1, 0)
+//        Plugin is too old, please update to a more recent version,
+//                or set ANDROID_DAILY_OVERRIDE environment variable to
+//        "4d75741a3bf7f83be3ad3ef8896c1853aa3caf2"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+
+
 }
+
 
 allprojects {
     repositories {

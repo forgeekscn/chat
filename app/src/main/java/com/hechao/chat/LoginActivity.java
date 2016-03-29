@@ -2,6 +2,8 @@ package com.hechao.chat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,10 +15,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.mapapi.map.BaiduMap;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.tencent.bugly.crashreport.CrashReport;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +30,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Observer;
 
 import butterknife.ButterKnife;
@@ -66,12 +72,29 @@ public class LoginActivity extends Activity {
 //    @InjectView(R.id.gifView2)
 //    GifView gifView2;
 
+    @InjectView(R.id.sensor)
+    TextView sensor;
+
+
+    @InjectView(R.id.baidumap)
+    Button baidumap;
+
+    SensorManager sensorManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        //crash处理
+        bugly();
+
+        //view注解
         ButterKnife.inject(this);
+
+        //传感器测试
+//        sensorTest();
 
 
         //gif图片显示
@@ -79,6 +102,106 @@ public class LoginActivity extends Activity {
 
         //短信处理
 //        SMSAPIDeal();
+
+
+//
+//        city	string	是	城市名urlencode utf8;
+//        keywords	string	否	关键字urlencode utf8;
+//        page	int	否	页数，默认1
+//        format	int	否	格式选择1或2，默认1
+//                key
+
+        //加油站
+        juheOil();
+
+
+        //百度map init
+
+
+    }
+
+
+    @OnClick(R.id.baidumap)
+    void  getBaidumap(){
+
+        Intent intent= new Intent(LoginActivity.this , BaiduMapActivity.class) ;
+        startActivity(intent);
+
+    }
+
+
+
+    //juhe加油站
+    private void juheOil() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.add("city", "黄冈");
+        params.add("key", "10eaa1e59ceeb2cbcd1ac446da43e3a9");
+//        params.add("keywords","");
+//        params.add("page","");
+//        params.add("format","");
+        String url = "http://apis.juhe.cn/oil/region";
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                String response = new String(bytes);
+                Log.e("hechao", "" + response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonArray = jsonObject.getJSONArray("result");
+
+//                    double baiduX=jsonObject.getDouble("lay");
+//                    double baiduY=jsonObject.getDouble("lon");
+//                    Double X= jsonArray.getDouble();
+//                    Double Y= jsonArray.getDouble();
+
+//                    Log.e("hechao","");
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                Log.e("hechao", "聚合加油站post->response" + response);
+            }
+
+            @Override
+            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+
+            }
+        });
+    }
+
+
+    //传感器测试
+    private void sensorTest() {
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+        for (Sensor sensor1 : sensorList) {
+
+            sensor.append(sensor1.getName() + "\n");
+        }
+    }
+
+
+    //crash处理
+    private void bugly() {
+
+        //用户策略
+        CrashReport.UserStrategy userStrategy = new CrashReport.UserStrategy(getApplicationContext());
+        userStrategy.setAppChannel("何超");
+        userStrategy.setAppVersion("Chat V1.0");
+        userStrategy.setAppReportDelay(5000);
+
+
+        CrashReport.initCrashReport(getApplicationContext(), "900023713", true, userStrategy);
+        CrashReport.setUserId("hechao");
+
+//        int i=1/0;
+
+
+//        System.loadLibrary("BuglyNativeDemo");
 
 
     }
@@ -117,8 +240,8 @@ public class LoginActivity extends Activity {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
 
-                String response=new String(bytes) ;
-                JSONObject jsonObject= new JSONObject() ;
+                String response = new String(bytes);
+                JSONObject jsonObject = new JSONObject();
 
                 Log.e("hechao", "SMSresponse:" + new String(bytes));
 
@@ -129,7 +252,6 @@ public class LoginActivity extends Activity {
                 Log.e("hechao", "error");
             }
         });
-
 
 
 //
@@ -155,29 +277,29 @@ public class LoginActivity extends Activity {
      * 验证码处理
      */
     @OnClick(R.id.getCode)
-    public  void dealCode() {
+    public void dealCode() {
 
         SMSAPIDeal();
-        Log.e("hechao","begin deal with code...");
-                //handler初始化
-                mHandler = new Handler() {
-                    @Override
-                    public void handleMessage(Message msg) {
+        Log.e("hechao", "begin deal with code...");
+        //handler初始化
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
 
-                        if (msg.what == RECEIVE_CODE) {
-                            String code1 = (String) msg.obj;
-                            code.setText(code1);
-                        }
-
-                    }
-                };
-
-                //验证码处理
-                observer = new SmsObserver(LoginActivity.this, mHandler);
-                Uri uri = Uri.parse("content://sms");
-                getContentResolver().registerContentObserver(uri, true, observer);
+                if (msg.what == RECEIVE_CODE) {
+                    String code1 = (String) msg.obj;
+                    code.setText(code1);
+                }
 
             }
+        };
+
+        //验证码处理
+        observer = new SmsObserver(LoginActivity.this, mHandler);
+        Uri uri = Uri.parse("content://sms");
+        getContentResolver().registerContentObserver(uri, true, observer);
+
+    }
 
     @Override
     protected void onPause() {
@@ -189,7 +311,7 @@ public class LoginActivity extends Activity {
      * 注册处理函数
      */
     @OnClick(R.id.register)
-     void regist() {
+    void regist() {
 
         Log.e("hechao", "register clicked");
         if (username.getText().toString() == "" || password.getText().toString() == "") {
