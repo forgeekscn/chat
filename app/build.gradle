@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'com.android.databinding'
-
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -67,4 +66,7 @@ android {
         compile files('libs/baidumapapi_search_v3_7_3.jar')
         compile files('libs/baidumapapi_util_v3_7_3.jar')
     }
+}
+dependencies {
+    compile files('libs/BaiduLBS_Android.jar')
 }

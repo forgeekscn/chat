@@ -7,8 +7,13 @@
     <com.baidu.mapapi.map.MapView
         android:id="@+id/bmapView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="500dp"
         android:clickable="true" />
 
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:text="退出百度地图"
+        />
 
 </LinearLayout>

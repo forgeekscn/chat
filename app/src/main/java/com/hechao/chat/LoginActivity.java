@@ -80,7 +80,7 @@ public class LoginActivity extends Activity {
     Button baidumap;
 
     SensorManager sensorManager;
-
+    StationData stationData= new StationData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +92,9 @@ public class LoginActivity extends Activity {
 
         //view注解
         ButterKnife.inject(this);
+
+
+
 
         //传感器测试
 //        sensorTest();
@@ -112,8 +115,9 @@ public class LoginActivity extends Activity {
 //                key
 
         //加油站
-//        juheOil();
+//        stationData.juheOil();
 
+//        stationData .getStationData(100,100,1000);
 
         //百度map init
 
@@ -145,7 +149,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 String response = new String(bytes);
-                Log.e("hechao", "" + response);
+//                Log.e("hechao", "" + response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray jsonArray = jsonObject.getJSONArray("result");

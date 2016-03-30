@@ -27,7 +27,6 @@ public class App extends Application {
         SDKInitializer.initialize(this);
 
         // 聚合数据sdk初始化
-//        com.thinkland.sdk.android.JuheSDKInitializer.initialize(this);
 
     }
 
