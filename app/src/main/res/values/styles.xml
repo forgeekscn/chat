@@ -5,9 +5,9 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="mytheme" parent="Theme.AppCompat">
+    <style name="mytheme" parent="Theme.AppCompat"></style>
 
+    <style name="theme1" parent="AppTheme"></style>
 
-    </style>
 
 </resources>

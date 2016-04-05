@@ -1,21 +1,36 @@
 package com.hechao.chat;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
@@ -34,8 +49,23 @@ public class MainActivity extends Activity {
     @InjectView(R.id.add)
     Button addFriend;
 
+    @InjectView(R.id.navigatorlistview)
+    ListView mDrawerList;
+
+    ArrayList<String> list;
+
+    android.support.v4.app.ActionBarDrawerToggle mActionBarDrawerToggle;
+
+    private String[] mPlanetTitles;
+
+    @InjectView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+
+
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -45,7 +75,16 @@ public class MainActivity extends Activity {
         //RongIM登录
         connect();
 
+//抽屉导航
+//        initMenu();
+
+
+
+
     }
+
+
+
 
     /**
      * 打开主页
@@ -106,7 +145,7 @@ public class MainActivity extends Activity {
             RongIM.connect(token, new RongIMClient.ConnectCallback() {
                 @Override
                 public void onTokenIncorrect() {
-                    Toast.makeText(MainActivity.this, "no success", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "no success", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -118,9 +157,10 @@ public class MainActivity extends Activity {
                 public void onError(RongIMClient.ErrorCode errorCode) {
 
 
-                    Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
                 }
             });
+
 
 //            RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
 //                @Override
@@ -134,33 +174,19 @@ public class MainActivity extends Activity {
     }
 
 
-    /**
-     * 菜单处理
-     *
-     * @param menu
-     * @return
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

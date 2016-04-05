@@ -12,7 +12,7 @@
 
     <Button
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="退出百度地图"
         />
 

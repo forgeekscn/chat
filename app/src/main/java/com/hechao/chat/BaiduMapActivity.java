@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
@@ -20,10 +21,13 @@ import com.baidu.mapapi.map.GroundOverlayOptions;
 import com.baidu.mapapi.map.HeatMap;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolygonOptions;
 import com.baidu.mapapi.map.PolylineOptions;
@@ -31,6 +35,7 @@ import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.map.TextOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
+import com.baidu.mapapi.model.inner.GeoPoint;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.route.TransitRouteLine;
@@ -56,60 +61,157 @@ public class BaiduMapActivity extends Activity {
     private Marker marker = null;
     private Marker mMarkerD = null;
     private TransitRouteLine route = null;
+
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
+
     private LatLng point = null;
+    boolean isFirstLoc=true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.baidumap);
         mMapView = (MapView) findViewById(R.id.bmapView);
-//        LocationClient定位配置
-        mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
-        mLocationClient.registerLocationListener(myListener);    //注册监听函数
-
-
-//开始定位
-        mLocationClient.start();
-
-
 //        设置地图形式
         setMapType();
+        // 开启定位图层
+        mBaiduMap.setMyLocationEnabled(true);
+//        LocationClient定位配置
+        initLocationClient();
+
+
+//        MyLocationOverlay myLocationOverlay = new MyLocationOverlay(mMapView);
+//        LocationData locData = new LocationData();
+////手动将位置源置为天安门，在实际应用中，请使用百度定位SDK获取位置信息，要在SDK中显示一个位置，需要使用百度经纬度坐标（bd09ll）
+//        locData.latitude = 39.945;
+//        locData.longitude = 116.404;
+//        locData.direction = 2.0f;
+//        myLocationOverlay.setData(locData);
+//        mMapView.getOverlays().add(myLocationOverlay);
+//        mMapView.refresh();
+//        mMapView.getController().animateTo(new GeoPoint((int)(locData.latitude*1e6),
+//                (int)(locData.longitude* 1e6)));
+
+
+//
+//        // 开启定位图层
+//        mBaiduMap.setMyLocationEnabled(true);
+//// 构造定位数据
+//        MyLocationData locData = new MyLocationData.Builder()
+//                .accuracy(location.getRadius())
+//                // 此处设置开发者获取到的方向信息，顺时针0-360
+//                .direction(100).latitude(location.getLatitude())
+//                .longitude(location.getLongitude()).build();
+//// 设置定位数据
+//        mBaiduMap.setMyLocationData(locData);
+//// 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
+//        mCurrentMarker = BitmapDescriptorFactory
+//                .fromResource(R.drawable.icon_geo);
+//        MyLocationConfiguration config = new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker);
+//        mBaiduMap.setMyLocationConfiguration();
+//// 当不需要定位图层时关闭定位图层
+//        mBaiduMap.setMyLocationEnabled(false);
+
+
 
         //定义Maker坐标点
-        setMaker();
+//        setMaker();
 
         //可拖拽图标
-        setDragable();
+//        setDragable();
 
 
         //绘制map
-        paintMap();
+//        paintMap();
 
         //设置动画
-        setAnim();
+//        setAnim();
 
 //        折线多段颜色绘制能力
-        paintLines();
+//        paintLines();
 
 //        文字，在地图中也是一种覆盖物，开发者可利用相关的接口，快速实现在地图上书写文字的需求。实现方式如下：
-        paintText();
+//        paintText();
 
 //        弹出窗覆盖物的实现方式如下，开发者可利用此接口，构建具有更强交互性的地图页面。
-        paintWindow();
+//        paintWindow();
 
 //        地形图图层（GroundOverlay），又可叫做图片图层，即开发者可在地图的指定位置上添加图片。该图片可随地图的平移
 //        、缩放、旋转等操作做相应的变换。该图层是一种特殊的Overlay， 它位于底图和底图标注层之间（即该图层不会遮挡地图标注信息）。
 //        在地图中添加使用地形图覆盖物的方式如下：
-        paintPIC();
+//        paintPIC();
 
 //        热力图是用不同颜色的区块叠加在地图上描述人群分布、密度和变化趋势的一个产品，百度地图SDK将绘制热力图的能力为广大开发者开放，帮助开发者利用自有数据，构建属于自己的热力图，提供丰富的展示效果。
 //        利用热力图功能构建自有数据热力图的方式如下：
 //        第一步，设置颜色变化：
-        paintHeat();
+//        paintHeat();
 
 
+    }
+
+
+
+
+    /**
+     * 定位监听器
+     */
+    private class MyLocationListener implements BDLocationListener {
+
+
+        public void onReceiveLocation(BDLocation location) {
+            // map view 销毁后不在处理新接收的位置
+            if (location == null || mMapView == null) {
+                return;
+            }
+            MyLocationData locData = new MyLocationData.Builder()
+                    .accuracy(location.getRadius())
+                    // 此处设置开发者获取到的方向信息，顺时针0-360
+                    .direction(100).latitude(location.getLatitude())
+                    .longitude(location.getLongitude()).build();
+            mBaiduMap.setMyLocationData(locData);
+
+            if (isFirstLoc) {
+                isFirstLoc = false;
+                LatLng ll = new LatLng(location.getLatitude(),
+                        location.getLongitude());
+                MapStatus.Builder builder = new MapStatus.Builder();
+                builder.target(ll).zoom(18.0f);
+                mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+            }
+        }
+
+    }
+
+
+
+
+    /**
+     * location
+     */
+    private void initLocationClient() {
+        mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
+        mLocationClient.registerLocationListener(myListener);    //注册监听函数
+
+//        LocationClientOption类，该类用来设置定位SDK的定位方式，e.g.：
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+        option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
+        int span = 1000;
+        option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
+//        option.setOpenGps(true);//可选，默认false,设置是否使用gps
+//        option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
+        option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
+        option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
+        option.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+        option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
+        option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
+        mLocationClient.setLocOption(option);
+
+        //开始定位
+        mLocationClient.start();
     }
 
     /**

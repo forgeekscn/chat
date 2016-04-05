@@ -10,8 +10,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
@@ -82,6 +85,8 @@ public class LoginActivity extends Activity {
     SensorManager sensorManager;
     StationData stationData= new StationData();
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +97,13 @@ public class LoginActivity extends Activity {
 
         //view注解
         ButterKnife.inject(this);
+
+
+
+
+
+
+
 
 
 
@@ -124,6 +136,12 @@ public class LoginActivity extends Activity {
 
     }
 
+
+    @OnClick(R.id.leftright)
+    void leftrightPage(){
+        LeftRightActivity leftRightActivity= new LeftRightActivity(this);
+        setContentView(leftRightActivity);
+    }
 
     @OnClick(R.id.baidumap)
     void  getBaidumap(){
@@ -325,7 +343,7 @@ public class LoginActivity extends Activity {
 //                    RequestParams params = new RequestParams();
 //                    params.add("username", user_name);
 //                    params.add("password", pass_word);
-            String url = "http://10.176.191.213/chat/reg.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
+            String url = "http://192.168.56.1/chat/reg.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
             Log.e("hechao", url);
             client.get(url, new AsyncHttpResponseHandler() {
                 @Override
@@ -378,12 +396,13 @@ public class LoginActivity extends Activity {
     @OnClick(R.id.login)
     public void login() {
 
-        if (username.getText().toString() == "" || password.getText().toString() == "") {
-            Toast.makeText(LoginActivity.this, "invalid form", Toast.LENGTH_SHORT).show();
+        if (username.getText().toString().equals("") || password.getText().toString().equals("")) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
         } else {
 
             AsyncHttpClient client = new AsyncHttpClient();
-            String url = "http://10.176.191.213/chat/login.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
+            String url = "http://192.168.56.1/chat/login.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
             Log.e("hechao", url);
             client.get(url, new AsyncHttpResponseHandler() {
                 @Override
@@ -405,7 +424,6 @@ public class LoginActivity extends Activity {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
-
 
                 }
 

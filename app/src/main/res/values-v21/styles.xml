@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat">
 
     </style>
+
     <style name="mytheme" parent="Theme.AppCompat">
 
     </style>
+
+    <style name="theme1" parent="AppTheme"></style>
+
 </resources>

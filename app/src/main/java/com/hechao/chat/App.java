@@ -18,16 +18,13 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
-        super.onCreate();
 
+        super.onCreate();
         //    融云sdk初始化
         RongIM.init(this);
-
         //   百度地图sdk初始化
         SDKInitializer.initialize(this);
-
         // 聚合数据sdk初始化
-
     }
 
 
