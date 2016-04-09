@@ -4,8 +4,13 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -36,23 +41,32 @@ import com.baidu.mapapi.map.TextOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.model.inner.GeoPoint;
+import com.baidu.mapapi.radar.RadarSearchError;
+import com.baidu.mapapi.radar.RadarSearchManager;
+import com.baidu.mapapi.radar.RadarUploadInfo;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.route.TransitRouteLine;
 import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.utils.*;
 import com.hechao.baidu.PoiOverlay;
 import com.hechao.baidu.TransitRouteOverlay;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import butterknife.InjectView;
+
+import static com.hechao.chat.R.*;
 
 public class BaiduMapActivity extends Activity {
     //获取地图控件引用
@@ -64,22 +78,38 @@ public class BaiduMapActivity extends Activity {
 
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
-
+    StationData stationData = new StationData();
     private LatLng point = null;
-    boolean isFirstLoc=true;
+    boolean isFirstLoc = true;
+
+    TextView mylocation;
+
+
+    BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_marka);
+    BitmapDescriptor bitmap2 = BitmapDescriptorFactory.fromResource(R.drawable.icon_markb);
+    BitmapDescriptor bitmap3 = BitmapDescriptorFactory.fromResource(R.drawable.icon_markc);
+    private TextView textView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.baidumap);
-        mMapView = (MapView) findViewById(R.id.bmapView);
+        setContentView(layout.baidumap);
+        mMapView = (MapView) findViewById(id.bmapView);
 //        设置地图形式
         setMapType();
-        // 开启定位图层
-        mBaiduMap.setMyLocationEnabled(true);
 //        LocationClient定位配置
         initLocationClient();
+        initTimer();
+        //加油站
+//        initStationdata();
+
+// 将底图标注设置为隐藏，方法如下：
+//        mBaiduMap.showMapPoi(false);
+
+
+        //周边
+//        initAround();
 
 
 //        MyLocationOverlay myLocationOverlay = new MyLocationOverlay(mMapView);
@@ -113,7 +143,6 @@ public class BaiduMapActivity extends Activity {
 //        mBaiduMap.setMyLocationConfiguration();
 //// 当不需要定位图层时关闭定位图层
 //        mBaiduMap.setMyLocationEnabled(false);
-
 
 
         //定义Maker坐标点
@@ -151,22 +180,141 @@ public class BaiduMapActivity extends Activity {
 
     }
 
+    /**
+     * 周边
+     */
+    private void initAround() {
 
+        RadarSearchManager mManager = RadarSearchManager.getInstance();
+
+
+    }
+
+
+    /**
+     * 初始化周边加油站
+     */
+
+    Button showStations;
+    List<Station> stations;
+
+    private void initStationdata() {
+        stationData.juheOil();
+
+        showStations = (Button) findViewById(id.showStations);
+        showStations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stations = new ArrayList<Station>();
+                stations = stationData.getStationList();
+                List<LatLng> pts = new ArrayList<LatLng>();
+
+
+                for (Station s : stations) {
+                    point = new LatLng(s.getLat(), s.getLon());
+                    pts.add(point);
+                    OverlayOptions option = new MarkerOptions().position(point).icon(bitmap).draggable(true);
+                    marker = (Marker) mBaiduMap.addOverlay(option);
+
+                    TextView info = new TextView(getApplicationContext());
+                    info.setText(s.getAddress());
+                    info.setTextColor(Color.BLACK);
+                    final InfoWindow mInfoWindow = new InfoWindow(info, point, -47);
+                    //显示InfoWindow
+                    mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            mBaiduMap.showInfoWindow(mInfoWindow);
+                            return true;
+                        }
+                    });
+
+
+                }
+
+
+                //构建用户绘制多边形的Option对象
+                OverlayOptions polygonOption = new PolygonOptions()
+                        .points(pts)
+                        .stroke(new Stroke(5, 0xAA00FF00))
+                        .fillColor(0xAAFFFF00);
+                //在地图上添加多边形Option，用于显示
+//                mBaiduMap.addOverlay(polygonOption);
+
+
+                //构造纹理资源
+//                BitmapDescriptor custom1 = BitmapDescriptorFactory.fromResource(drawable.rc_ic_text);
+                //构造对象
+                OverlayOptions ooPolyline = new PolylineOptions().width(30).color(0xAAFF0000).points(pts);
+                //添加到地图
+                mBaiduMap.addOverlay(ooPolyline);
+
+
+                //调用BaiduMap对象的setOnMarkerDragListener方法设置marker拖拽的监听
+                mBaiduMap.setOnMarkerDragListener(new BaiduMap.OnMarkerDragListener() {
+                    public void onMarkerDrag(Marker marker) {
+                        //拖拽中
+                    }
+
+                    public void onMarkerDragEnd(Marker marker) {
+                        //拖拽结束
+                    }
+
+                    public void onMarkerDragStart(Marker marker) {
+                        //开始拖拽
+                    }
+                });
+
+            }
+        });
+
+    }
+
+
+    /**
+     * 定时器
+     */
+    long currentTime=0;
+    void initTimer(){
+        Date now = new Date();
+        currentTime=now.getTime();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    }
 
 
     /**
      * 定位监听器
      */
+
+    private int i = 0;
+    double distance = 0;
+    List<LatLng> pts = new ArrayList<LatLng>();
+
+    double totalDistance = 0;
+    TextView speed;
+
     private class MyLocationListener implements BDLocationListener {
 
-
         public void onReceiveLocation(BDLocation location) {
+//            Log.e("hechao", "onReceive...");
             // map view 销毁后不在处理新接收的位置
             if (location == null || mMapView == null) {
+                Log.e("hechao", "location == null || mMapView == null ");
                 return;
             }
-            MyLocationData locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())
+
+            if (pts.size() > 1) {
+                if (pts.get(pts.size() - 1).latitude != location.getLatitude() ||
+                        pts.get(pts.size() - 1).longitude != location.getLongitude()) {
+//                    Toast.makeText(getApplicationContext(), "正在移动" + location.getLocationDescribe(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+
+//            pts.add(new LatLng(30.123123,114.123123));
+
+            MyLocationData locData = new MyLocationData.Builder().accuracy(location.getRadius())
                     // 此处设置开发者获取到的方向信息，顺时针0-360
                     .direction(100).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
@@ -174,25 +322,79 @@ public class BaiduMapActivity extends Activity {
 
             if (isFirstLoc) {
                 isFirstLoc = false;
-                LatLng ll = new LatLng(location.getLatitude(),
-                        location.getLongitude());
+                LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
                 MapStatus.Builder builder = new MapStatus.Builder();
-                builder.target(ll).zoom(18.0f);
+                builder.target(ll).zoom(16.7f);
+                mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+
+            } else {
+                LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+//                Log.e("hechao","首次定位"+ll.toString());
+                MapStatus.Builder builder = new MapStatus.Builder();
+//                builder.target(ll);
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
+//            mylocation.setText(location.getAddrStr());
+
+
+            //标出当前位置
+            point = new LatLng(location.getLatitude(), location.getLongitude());
+
+//            Log.e("hechao", i + point.toString());
+            i++;
+//            OverlayOptions option = new MarkerOptions().position(point).icon(bitmap);
+//            Toast.makeText(getApplicationContext(), "第" + i + "次定位" + point.toString(), Toast.LENGTH_SHORT).show();
+//            mBaiduMap.addOverlay(option);
+//            mMapView.removeAllViews();
+            long n= new Date().getTime();
+            DecimalFormat df = new DecimalFormat( "0.0 ");
+            if (pts.size() >= 2) {
+                double d = com.baidu.mapapi.utils.DistanceUtil.getDistance(pts.get(pts.size() - 1), point);
+                totalDistance+=d;
+                Log.e("hechao", "跑了 " + totalDistance + " 米");
+//                Toast.makeText(getApplicationContext(), "第" + i + "次跑了 " + d + " 米", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "跑了 " + totalDistance + " 米", Toast.LENGTH_SHORT).show();
+                textView.setText("完成了： " + df.format(totalDistance)+ " 米");
+                int min=  (  (int)((n-currentTime)/1000)  /60 ) ;
+                int sec= (int) ((n-currentTime)/1000-min*60);
+                speed.setText("时间："+min +"min"+sec+"sec  \n"+"速度："+(double)(Math.round( totalDistance/min *100)/100.0)  +" 米/分钟");
+                OverlayOptions ooPolyline = new PolylineOptions().width(20).color(0xAAFF0000).points(pts);
+                //添加到地图
+                mBaiduMap.addOverlay(ooPolyline);
+            }
+            pts.add(point);
+//            ArrayList<BitmapDescriptor> giflist = new ArrayList<BitmapDescriptor>();
+//            giflist.add(bitmap);
+//            giflist.add(bitmap2);
+//            giflist.add(bitmap3);
+
+//            MarkerOptions ooD = new MarkerOptions().position(point).icons(giflist).zIndex(0).period(10);
+//            // 生长动画
+//            ooD.animateType(MarkerOptions.MarkerAnimateType.grow);
+//            Marker mMarkerD = (Marker) (mBaiduMap.addOverlay(ooD));
+
+
         }
 
+
     }
-
-
 
 
     /**
      * location
      */
     private void initLocationClient() {
+        textView= (TextView) findViewById(id.totalDistance);
+        speed= (TextView) findViewById(id.speed);
+        // 开启定位图层
+        mBaiduMap.setMyLocationEnabled(true);
+
         mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
         mLocationClient.registerLocationListener(myListener);    //注册监听函数
+
+
+//        mBaiduMap.setMyLocationConfigeration( new MyLocationConfiguration(MyLocationConfiguration.LocationMode.COMPASS, true, mCurrentMarker) );
+
 
 //        LocationClientOption类，该类用来设置定位SDK的定位方式，e.g.：
         LocationClientOption option = new LocationClientOption();
@@ -201,7 +403,7 @@ public class BaiduMapActivity extends Activity {
         int span = 1000;
         option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
-//        option.setOpenGps(true);//可选，默认false,设置是否使用gps
+        option.setOpenGps(true);//可选，默认false,设置是否使用gps
 //        option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
         option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
         option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
@@ -277,7 +479,7 @@ public class BaiduMapActivity extends Activity {
                 .build();
 //定义Ground显示的图片
         BitmapDescriptor bdGround = BitmapDescriptorFactory
-                .fromResource(R.drawable.ground_overlay);
+                .fromResource(drawable.ground_overlay);
 //定义Ground覆盖物选项
         OverlayOptions ooGround = new GroundOverlayOptions()
                 .positionFromBounds(bounds)
@@ -294,7 +496,7 @@ public class BaiduMapActivity extends Activity {
     private void paintWindow() {
         //创建InfoWindow展示的view
         Button button = new Button(getApplicationContext());
-        button.setBackgroundResource(R.drawable.popup);
+        button.setBackgroundResource(drawable.popup);
 //定义用于显示该InfoWindow的坐标点
         LatLng pt = new LatLng(39.869113, 116.397128);
 //创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
@@ -328,11 +530,11 @@ public class BaiduMapActivity extends Activity {
      */
     private void paintLines() {
         BitmapDescriptor custom1 = BitmapDescriptorFactory
-                .fromResource(R.drawable.button_on);
+                .fromResource(drawable.button_on);
         BitmapDescriptor custom2 = BitmapDescriptorFactory
-                .fromResource(R.drawable.button_down);
+                .fromResource(drawable.button_down);
         BitmapDescriptor custom3 = BitmapDescriptorFactory
-                .fromResource(R.drawable.button_down);
+                .fromResource(drawable.button_down);
 // 定义点
         LatLng pt1 = new LatLng(39.93923, 116.357428);
         LatLng pt2 = new LatLng(39.91923, 116.327428);
@@ -399,7 +601,7 @@ public class BaiduMapActivity extends Activity {
     private void setMaker() {
         point = new LatLng(30.374455, 114.338671);
         //构建Marker图标
-        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.location);
+        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(drawable.location);
         //构建MarkerOption，用于在地图上添加Marker
 //        OverlayOptions option = new MarkerOptions().position(point).icon(bitmap);
         //在地图上添加Marker，并显示
@@ -412,7 +614,7 @@ public class BaiduMapActivity extends Activity {
      */
 
     private void setDragable() {
-        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.location);
+        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(drawable.location);
         //        第一步，设置可拖拽：
         OverlayOptions options = new MarkerOptions()
                 .position(point)  //设置marker的位置

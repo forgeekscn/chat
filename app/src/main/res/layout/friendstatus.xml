@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#822"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/runnersworld"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:layout_marginTop="100dp"
+        android:background="#722"
+        android:text="跑友圈" />
+
+    <Button
+        android:id="@+id/myrunnersfriends"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:background="#722"
+        android:text="我的好友" />
+
+    <Button
+        android:id="@+id/runnerConversation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+
+        android:background="#722"
+        android:text="消息列表" />
+
+    <Button
+        android:id="@+id/farest"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:background="#722"
+        android:text="排行榜" />
+
+
+</LinearLayout>

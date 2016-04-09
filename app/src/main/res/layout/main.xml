@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="#822000"
+    android:orientation="vertical">
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="fill_parent"
+        android:layout_height="365dp"
+        android:clickable="true"
+        android:elevation="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical">
+
+        <!--<Button-->
+        <!--android:id="@+id/showStations"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="显示周边加油站" />-->
+
+        <TextView
+            android:id="@+id/totalDistance"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:text="完成了："
+            android:textColor="#000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/speed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="时间：    速度："
+            android:textColor="#000"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom"
+        android:elevation="20dp"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="1dp"
+            android:orientation="horizontal"
+            android:padding="1dp">
+
+            <ImageButton
+
+                android:id="@+id/myrun"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="left|center_vertical"
+                android:background="@drawable/myrun" />
+
+            <ImageButton
+                android:id="@+id/start"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="50dp"
+                android:background="@drawable/start" />
+
+            <ImageButton
+                android:id="@+id/friend"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginLeft="50dp"
+                android:background="@drawable/find" />
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+</LinearLayout>

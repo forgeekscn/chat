@@ -1,5 +1,8 @@
 package com.hechao.chat;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -11,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.security.auth.login.LoginException;
 
@@ -21,15 +25,43 @@ import cz.msebera.android.httpclient.Header;
  */
 public class StationData {
 
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0x123:
+                    for (int j = 0; j < msg.getData().getInt("stationNumber"); j++) {
+
+                        Station station = (Station) msg.getData().getSerializable("station" + (j+1) );
+                        Log.e("hechao", station.toString());
+                        stationList.add(station);
+                    }
+
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+    List<Station> stationList=null;
+
     public void print(Object o) {
         Log.e("hechao", o.toString());
     }
 
+    public List<Station> getStationList() {
+        return stationList;
+    }
+
     //获取周边加油站信息
     public void juheOil() {
+
+        stationList= new ArrayList<Station>();
+
+
+
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.add("city", "黄冈");
+        params.add("city", "武汉");
         params.add("key", "10eaa1e59ceeb2cbcd1ac446da43e3a9");
 //        params.add("keywords","");
 //        params.add("page","");
@@ -45,20 +77,27 @@ public class StationData {
                     print(response);
                     int code = jsonObject.getInt("resultcode");
                     print(code);
-                    if (code==200) {
+                    if (code == 200) {
                         JSONArray jsonArray = jsonObject.getJSONObject("result").getJSONArray("data");
+
+                        Message msg = new Message();
+                        msg.what = 0x123;
+                        Bundle b = new Bundle();
+
+                        b.putInt("stationNumber", jsonArray.length());
 
                         for (int i1 = 0; i1 < jsonArray.length(); i1++) {
 
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i1);
                             Station station = new Station();
-
                             station.setName(jsonObject1.getString("name"));
                             station.setLat(jsonObject1.getDouble("lat"));
                             station.setLon(jsonObject1.getDouble("lon"));
                             station.setAddress(jsonObject1.getString("address"));
                             station.setBrandname(jsonObject1.getString("brandname"));
-                            station.setPrice(jsonObject1.getJSONObject("price").getDouble("E93") );
+                            station.setPrice(jsonObject1.getJSONObject("price").getDouble("E93"));
+
+                            b.putSerializable("station" + (i1 + 1), station);
 //                            station.setDistance(jsonObject1.getString("distance"));
                             //-----------------油价尚未获取-------------------
 
@@ -78,7 +117,14 @@ public class StationData {
 
 
                         }
+
+
+                        msg.setData(b);
+                        handler.sendMessage(msg);
+
                     }
+
+//                    return ;
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -92,6 +138,8 @@ public class StationData {
 
             }
         });
+
+
     }
 
 

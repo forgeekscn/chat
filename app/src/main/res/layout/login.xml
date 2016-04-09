@@ -1,23 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#888"
+    android:orientation="vertical">
 
 
     <EditText
-        android:layout_width="match_parent"
+        android:id="@+id/user_name"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:hint="username"
-        android:id="@+id/user_name" />
+        android:layout_marginLeft="10dp"
+        android:textColor="#000000"
+        android:layout_marginTop="200dp"
+        android:hint="username" />
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/password"
-        android:inputType="numberPassword"
-        android:hint="password" />
+        android:layout_width="300dp"
+        android:textColor="#000000"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:hint="password"
+        android:inputType="numberPassword" />
+
+    <LinearLayout
+        android:id="@+id/linearlayout"
+        android:layout_marginLeft="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/register"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/phone"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:hint="手机号码" />
+
+
+        <Button
+            android:id="@+id/getCode"
+            android:layout_width="80dp"
+            android:background="@drawable/abc_btn_colored_material"
+            android:layout_height="wrap_content"
+            android:text="获取"
+
+
+            />
+
+        <EditText
+            android:id="@+id/code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="验证码"
+
+            />
+
+
+    </LinearLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,118 +70,79 @@
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/login"
+            android:layout_alignParentLeft="true"
             android:clickable="true"
             android:text="登陆"
-            android:layout_alignParentLeft="true"
-            android:textSize="20dp"
-            android:textColor="#ffffff" />
+            android:textColor="#000000"
+            android:textSize="20dp" />
 
         <TextView
+            android:id="@+id/register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/register"
-            android:text="注册"
-            android:clickable="true"
-            android:textSize="20dp"
             android:layout_alignParentRight="true"
-            android:textColor="#ffffff" />
-
-        <LinearLayout
-            android:layout_below="@id/register"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/linearlayout"
-            android:orientation="horizontal">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:id="@+id/phone"
-                android:hint="手机号码" />
-
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/getCode"
-                android:layout_weight="3"
-                android:text="获取"
-
-
-                />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:id="@+id/code"
-
-                android:hint="验证码"
-
-                />
-
-
-        </LinearLayout>
+            android:layout_marginRight="50dp"
+            android:clickable="true"
+            android:text="注册"
+            android:textColor="#000000"
+            android:textSize="20dp" />
 
 
 
-        <com.hechao.chat.GifView
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            app:src="@drawable/disuxiaoshuo"
-            android:layout_below="@id/linearlayout"
-            android:id="@+id/gif"
-            />
-
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/scrollView"
-            android:layout_below="@id/gif">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/baidumap"
-                    android:text="查看百度地图"
-                    />
-
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="左右菜单"
-                    android:id="@+id/leftright"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sensor"
-                    />
-
-
-
-
-                </LinearLayout>
-
-            </ScrollView>
         <!--<com.hechao.chat.GifView-->
-            <!--android:id="@+id/gifView2"-->
-            <!--android:layout_below="@id/linearlayout"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:background="#888"-->
-            <!--android:layout_width="200dp"-->
-            <!--android:layout_height="150dp"-->
-            <!--app:src="@drawable/disuxiaoshuo" />-->
+        <!--android:layout_width="300dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--app:src="@drawable/disuxiaoshuo"-->
+        <!--android:layout_below="@id/linearlayout"-->
+        <!--android:id="@+id/gif"-->
+        <!--/>-->
+
+
+        <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/scrollView"-->
+        <!--&gt;-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<Button-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/baidumap"-->
+        <!--android:text="查看百度地图"-->
+        <!--/>-->
+
+        <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="左右菜单"-->
+        <!--android:id="@+id/leftright"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/sensor"-->
+        <!--/>-->
+
+
+        <!--</LinearLayout>-->
+
+        <!--</ScrollView>-->
+        <!--<com.hechao.chat.GifView-->
+        <!--android:id="@+id/gifView2"-->
+        <!--android:layout_below="@id/linearlayout"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:background="#888"-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="150dp"-->
+        <!--app:src="@drawable/disuxiaoshuo" />-->
 
 
     </RelativeLayout>

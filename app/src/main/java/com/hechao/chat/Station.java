@@ -1,11 +1,12 @@
 package com.hechao.chat;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2016/3/30.
  */
-public class Station {
+public class Station implements Serializable{
 
 
     String name;

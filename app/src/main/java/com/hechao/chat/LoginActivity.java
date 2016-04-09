@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -30,8 +31,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
@@ -56,15 +61,18 @@ public class LoginActivity extends Activity {
 
     @InjectView(R.id.login)
     TextView login;
-    @InjectView(R.id.register)
-    TextView register;
+//    @InjectView(R.id.register)
+//    TextView register;
+//
+//    @InjectView(R.id.phone)
+//    EditText phone;
+//    @InjectView(R.id.code)
+//    EditText code;
+//    @InjectView(R.id.getCode)
+//    Button getCode;
 
-    @InjectView(R.id.phone)
-    EditText phone;
-    @InjectView(R.id.code)
-    EditText code;
-    @InjectView(R.id.getCode)
-    Button getCode;
+    @InjectView(R.id.gotoRegister)
+    Button gotologin;
 
     private Handler mHandler;
     public static final int RECEIVE_CODE = 1;
@@ -75,37 +83,28 @@ public class LoginActivity extends Activity {
 //    @InjectView(R.id.gifView2)
 //    GifView gifView2;
 
-    @InjectView(R.id.sensor)
-    TextView sensor;
+//    @InjectView(R.id.sensor)
+//    TextView sensor;
 
 
-    @InjectView(R.id.baidumap)
-    Button baidumap;
+//    @InjectView(R.id.baidumap)
+//    Button baidumap;
 
     SensorManager sensorManager;
-    StationData stationData= new StationData();
-
+    StationData stationData = new StationData();
+    private String ip ="10.176.172.177";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.login1);
 
         //crash处理
-        bugly();
+//        bugly();
 
         //view注解
         ButterKnife.inject(this);
-
-
-
-
-
-
-
-
-
 
 
         //传感器测试
@@ -137,20 +136,26 @@ public class LoginActivity extends Activity {
     }
 
 
-    @OnClick(R.id.leftright)
-    void leftrightPage(){
-        LeftRightActivity leftRightActivity= new LeftRightActivity(this);
-        setContentView(leftRightActivity);
-    }
+//    @OnClick(R.id.leftright)
+//    void leftrightPage(){
+//        LeftRightActivity leftRightActivity= new LeftRightActivity(this);
+//        setContentView(leftRightActivity);
+//    }
 
-    @OnClick(R.id.baidumap)
-    void  getBaidumap(){
+//    @OnClick(R.id.baidumap)
+//    void  getBaidumap(){
+//
+//        Intent intent= new Intent(LoginActivity.this , BaiduMapActivity.class) ;
+//        startActivity(intent);
+//
+//    }
 
-        Intent intent= new Intent(LoginActivity.this , BaiduMapActivity.class) ;
+
+    @OnClick(R.id.gotoRegister)
+    void gotologinPage() {
+        Intent intent = new Intent(LoginActivity.this, Register1.class);
         startActivity(intent);
-
     }
-
 
 
     //juhe加油站
@@ -197,15 +202,15 @@ public class LoginActivity extends Activity {
 
 
     //传感器测试
-    private void sensorTest() {
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
-        for (Sensor sensor1 : sensorList) {
-
-            sensor.append(sensor1.getName() + "\n");
-        }
-    }
-
+//    private void sensorTest() {
+//        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+//        List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+//        for (Sensor sensor1 : sensorList) {
+//
+//            sensor.append(sensor1.getName() + "\n");
+//        }
+//    }
+//
 
     //crash处理
     private void bugly() {
@@ -247,33 +252,33 @@ public class LoginActivity extends Activity {
     /**
      * 短信验证码处理
      */
-    private void SMSAPIDeal() {
-
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("apikey", "34ca0f7732b7f0718ad418e3e7d6ed08");
-        params.put("mobile", phone.getText().toString());
-        params.put("text", "【纺大阳光】你好，请保存此验证码123456，作为入场的唯一凭证，请妥善保管！");
-        String url = "https://sms.yunpian.com/v1/sms/send.json";
-
-        Log.e("hechao", "begin sms...");
-        client.post(url, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int i, Header[] headers, byte[] bytes) {
-
-                String response = new String(bytes);
-                JSONObject jsonObject = new JSONObject();
-
-                Log.e("hechao", "SMSresponse:" + new String(bytes));
-
-            }
-
-            @Override
-            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                Log.e("hechao", "error");
-            }
-        });
+//    private void SMSAPIDeal() {
+//
+//
+//        AsyncHttpClient client = new AsyncHttpClient();
+//        RequestParams params = new RequestParams();
+//        params.put("apikey", "34ca0f7732b7f0718ad418e3e7d6ed08");
+//        params.put("mobile", phone.getText().toString());
+//        params.put("text", "【纺大阳光】你好，请保存此验证码123456，作为入场的唯一凭证，请妥善保管！");
+//        String url = "https://sms.yunpian.com/v1/sms/send.json";
+//
+//        Log.e("hechao", "begin sms...");
+//        client.post(url, params, new AsyncHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+//
+//                String response = new String(bytes);
+//                JSONObject jsonObject = new JSONObject();
+//
+//                Log.e("hechao", "SMSresponse:" + new String(bytes));
+//
+//            }
+//
+//            @Override
+//            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+//                Log.e("hechao", "error");
+//            }
+//        });
 
 
 //
@@ -290,39 +295,38 @@ public class LoginActivity extends Activity {
 //        } catch (URISyntaxException e) {
 //            e.printStackTrace();
 //        }
-
-
-    }
+//
+//
+//    }
 
 
     /**
      * 验证码处理
      */
-    @OnClick(R.id.getCode)
-    public void dealCode() {
-
-        SMSAPIDeal();
-        Log.e("hechao", "begin deal with code...");
-        //handler初始化
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-
-                if (msg.what == RECEIVE_CODE) {
-                    String code1 = (String) msg.obj;
-                    code.setText(code1);
-                }
-
-            }
-        };
-
-        //验证码处理
-        observer = new SmsObserver(LoginActivity.this, mHandler);
-        Uri uri = Uri.parse("content://sms");
-        getContentResolver().registerContentObserver(uri, true, observer);
-
-    }
-
+//    @OnClick(R.id.getCode)
+//    public void dealCode() {
+//
+//        SMSAPIDeal();
+//        Log.e("hechao", "begin deal with code...");
+//        //handler初始化
+//        mHandler = new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//
+//                if (msg.what == RECEIVE_CODE) {
+//                    String code1 = (String) msg.obj;
+//                    code.setText(code1);
+//                }
+//
+//            }
+//        };
+//
+//        //验证码处理
+//        observer = new SmsObserver(LoginActivity.this, mHandler);
+//        Uri uri = Uri.parse("content://sms");
+//        getContentResolver().registerContentObserver(uri, true, observer);
+//
+//    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -332,63 +336,73 @@ public class LoginActivity extends Activity {
     /**
      * 注册处理函数
      */
-    @OnClick(R.id.register)
-    void regist() {
+//    @OnClick(R.id.register)
+//    void regist() {
+//
+//        Log.e("hechao", "register clicked");
+//        if (username.getText().toString() == "" || password.getText().toString() == "") {
+//            Toast.makeText(LoginActivity.this, "invalid form", Toast.LENGTH_SHORT).show();
+//        } else {
+//            AsyncHttpClient client = new AsyncHttpClient();
+////                    RequestParams params = new RequestParams();
+////                    params.add("username", user_name);
+////                    params.add("password", pass_word);
+//            String url = "http://192.168.56.1/chat/reg.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
+//            Log.e("hechao", url);
+//            client.get(url, new AsyncHttpResponseHandler() {
+//                @Override
+//                public void onSuccess(int i, Header[] headers, byte[] bytes) {
+//
+//                    String response = new String(bytes);
+//                    Log.e("hechao", "response:" + response);
+//                    try {
+//                        JSONObject jsonObject = new JSONObject(response);
+//                        String status = jsonObject.getString("code");
+//
+//                        if (!status.equals("200")) {
+//                            Log.e("hechao", "error");
+//                        } else {
+//                            Log.e("hechao", "register success");
+//                            String token = jsonObject.getString("token");
+//                            Log.e("hechao", "token: " + token);
+//                            App.token = token;
+//                            App.username = username.getText().toString();
+//                            App.isLogin = true;
+//                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                            startActivity(intent);
+//                            finish();
+//
+//                        }
+//
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+//                    Toast.makeText(LoginActivity.this, "network error", Toast.LENGTH_SHORT).show();
+//
+//                }
+//            });
+//
+//
+//        }
+//
+//    }
 
-        Log.e("hechao", "register clicked");
-        if (username.getText().toString() == "" || password.getText().toString() == "") {
-            Toast.makeText(LoginActivity.this, "invalid form", Toast.LENGTH_SHORT).show();
-        } else {
-            AsyncHttpClient client = new AsyncHttpClient();
-//                    RequestParams params = new RequestParams();
-//                    params.add("username", user_name);
-//                    params.add("password", pass_word);
-            String url = "http://192.168.56.1/chat/reg.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
-            Log.e("hechao", url);
-            client.get(url, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int i, Header[] headers, byte[] bytes) {
 
-                    String response = new String(bytes);
-                    Log.e("hechao", "response:" + response);
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        String status = jsonObject.getString("code");
-
-                        if (!status.equals("200")) {
-                            Log.e("hechao", "error");
-                        } else {
-                            Log.e("hechao", "register success");
-                            String token = jsonObject.getString("token");
-                            Log.e("hechao", "token: " + token);
-                            App.token = token;
-                            App.username = username.getText().toString();
-                            App.isLogin = true;
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-
-                        }
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                    Toast.makeText(LoginActivity.this, "network error", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
-
-        }
-
+    /**
+     * 试用
+     */
+    @OnClick(R.id.tryacount)
+    void tryAcount() {
+        Intent intent = new Intent(LoginActivity.this, main.class);
+        startActivity(intent);
+        finish();
     }
-
 
     /**
      * 登陆处理函数
@@ -396,40 +410,54 @@ public class LoginActivity extends Activity {
     @OnClick(R.id.login)
     public void login() {
 
+
+        //    通过AlertDialog.Builder这个类来实例化我们的一个AlertDialog的对象
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        //    设置Title的图标
+        builder.setIcon(R.drawable.rc_progress_sending_style);
+        //    设置Title的内容
+        builder.setTitle("正在登陆");
+        builder.show();
+
+
+
+//        Log.e("hechao", ip);
         if (username.getText().toString().equals("") || password.getText().toString().equals("")) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, main.class);
             startActivity(intent);
         } else {
 
+
+//            String ip = (new NetworkInterface()).getInterfaceAddresses();
+
+
             AsyncHttpClient client = new AsyncHttpClient();
-            String url = "http://192.168.56.1/chat/login.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
+            String url = "http://" + ip + "/chat/login.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
             Log.e("hechao", url);
             client.get(url, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
 
-
                     String response = new String(bytes);
 
-
                     if (response.equals("error")) {
-
+                        Log.e("hechao", "error");
                     } else {
                         Log.e("hechao", "response:" + response);
-
                         App.token = response;
                         App.username = username.getText().toString();
                         App.isLogin = true;
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, main.class);
                         startActivity(intent);
+                        finish();
                     }
 
                 }
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-
+                    Log.e("hechao", "fail");
                 }
 
 

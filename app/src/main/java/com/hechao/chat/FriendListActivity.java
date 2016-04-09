@@ -17,6 +17,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
@@ -31,7 +32,7 @@ public class FriendListActivity extends Activity {
 
     List<String> friendList = new ArrayList<String>();
 
-    @InjectView(R.id.friendlist)
+    @InjectView(R.id.friendlist1)
     ListView listView;
 
     @InjectView(R.id.refresh)
@@ -43,8 +44,11 @@ public class FriendListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.friendlist);
 
+        ButterKnife.inject(FriendListActivity.this);
+
         refreshFriendList();
         myAdapter = new MyAdapter(friendList, FriendListActivity.this);
+
         listView.setAdapter(myAdapter);
 
 
@@ -68,12 +72,14 @@ public class FriendListActivity extends Activity {
     private void refreshFriendList() {
 
         AsyncHttpClient client = new AsyncHttpClient();
-        String url = "http://10.176.137.250/chat/getFriendList.php?username=" + App.username;
+
+        String url = "http://"+App.ip+"/chat/getFriendList.php?username=" + App.username;
+        Log.e("hechao",url);
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 String response = new String(bytes);
-//                Log.e("hechao", "response:" + response);
+                Log.e("hechao", "friend list response:" + response);
                 friendList.clear();
 
                 try {

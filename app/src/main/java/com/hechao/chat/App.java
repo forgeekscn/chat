@@ -15,6 +15,7 @@ public class App extends Application {
     public static String token = null;
     public static String username = null;
     public static boolean isLogin = false;
+    public static String ip="10.176.172.177";
 
     @Override
     public void onCreate() {

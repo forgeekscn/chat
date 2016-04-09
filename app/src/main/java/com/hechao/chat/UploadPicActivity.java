@@ -50,6 +50,7 @@ public class UploadPicActivity extends Activity {
     private int galley_code = 2;
     private int crop_code = 3;
 
+    String ip = "10.176.172.177";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,7 @@ public class UploadPicActivity extends Activity {
         params.add("img", img);
 
 
-        client.post("http://10.176.191.213/chat/upload.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://"+ip+"/chat/upload.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(UploadPicActivity.this, "success", Toast.LENGTH_SHORT).show();
@@ -215,10 +216,8 @@ public class UploadPicActivity extends Activity {
         intent.putExtra("outputY", "150");
         intent.putExtra("return-data", true);
 
-
         startActivityForResult(intent, crop_code);
 
     }
-
 
 }
