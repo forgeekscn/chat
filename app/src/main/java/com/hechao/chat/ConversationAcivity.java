@@ -16,7 +16,7 @@ public class ConversationAcivity extends ActionBarActivity {
 
         setContentView(R.layout.conversation);
 
-        setTitle(App.username);
+        setTitle("");
 
     }
 }

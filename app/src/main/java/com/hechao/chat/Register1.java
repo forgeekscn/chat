@@ -69,6 +69,7 @@ public class Register1 extends Activity {
 //                    RequestParams params = new RequestParams();
 //                    params.add("username", user_name);
 //                    params.add("password", pass_word);
+//            http://localhost/chat/reg.php?username=ll&password=123
             String url = "http://"+App.ip+"/chat/reg.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
             Log.e("hechao", url);
             client.get(url, new AsyncHttpResponseHandler() {

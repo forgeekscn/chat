@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#822"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/myrun"
+        android:layout_marginTop="100dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_margin="10dp"
+        android:id="@+id/friendname"
+        android:layout_gravity="center_horizontal"
+        android:text="这是ta的主页" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/addfriend1"
+        android:layout_height="wrap_content"
+        android:text="添加为好友"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/startprivate"
+        android:layout_height="wrap_content"
+        android:text="发送消息"
+        />
+
+</LinearLayout>

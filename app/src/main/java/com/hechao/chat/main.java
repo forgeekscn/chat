@@ -1,10 +1,19 @@
 package com.hechao.chat;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,10 +24,13 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
@@ -28,10 +40,15 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -53,6 +70,8 @@ public class main extends Activity {
     private Marker mMarkerD = null;
     private TransitRouteLine route = null;
 
+
+    boolean First = true;
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
     StationData stationData = new StationData();
@@ -95,6 +114,135 @@ public class main extends Activity {
 //        initAround();
 
 
+        //活跃状态监听
+        online();
+
+
+    }
+
+    void online() {
+
+
+        if (RongIM.getInstance() != null && RongIM.getInstance().getRongIMClient() != null) {
+            /**
+             * 设置连接状态变化的监听器.
+             */
+            RongIM.getInstance().getRongIMClient().setConnectionStatusListener(new MyConnectionStatusListener());
+        }
+
+
+        mBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+                mBaiduMap.hideInfoWindow();
+                Toast.makeText(main.this, "mapclick", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public boolean onMapPoiClick(MapPoi mapPoi) {
+                Toast.makeText(main.this, "mapPoiclick", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        listener = new MarkerClickedListener();
+        mBaiduMap.setOnMarkerClickListener(listener);
+
+
+    }
+
+
+    MarkerClickedListener listener = null;
+
+
+    /**
+     * infowindow监听器
+     */
+    private class MarkerClickedListener implements BaiduMap.OnMarkerClickListener {
+
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            Toast.makeText(main.this, "打个招呼", Toast.LENGTH_SHORT).show();
+
+            Button button = new Button(getApplicationContext());
+            button.setBackgroundResource(R.drawable.popup);
+//            FrameLayout.LayoutParams lytp = new FrameLayout.LayoutParams(220, 180);
+//            lytp.gravity = Gravity.CENTER;
+//            button.setLayoutParams(lytp);
+//定义用于显示该InfoWindow的坐标点
+            LatLng pt = marker.getPosition();
+//            marker.getExtraInfo();
+//创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
+//            View view= LayoutInflater.from(main.this).inflate(R.layout.infowindow,null);
+
+            TextView infor = new TextView(main.this);
+            infor.setBackgroundResource(R.drawable.popup);
+            infor.setText("在你附近10km\n看看ta是谁");
+            infor.setTextColor(getResources().getColor(R.color.accent_material_dark));
+//            InfoWindow mInfoWindow = new InfoWindow(infor, pt,-47);
+
+
+//            new InfoWindow.OnInfoWindowClickListener() {
+//                @Override
+//                public void onInfoWindowClick() {
+//
+//                }
+//            };
+
+
+            View linlayout = main.this.getLayoutInflater().inflate(R.layout.infowindow, null);//定义用于显示该InfoWindow的坐标点
+//创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
+            InfoWindow mInfoWindow = new InfoWindow(linlayout, pt, -47);
+
+            ImageView personpic = (ImageView) linlayout.findViewById(R.id.personpic);
+            TextView personname = (TextView) linlayout.findViewById(R.id.personname);
+            TextView personinfo = (TextView) linlayout.findViewById(R.id.personinfo);
+
+            final Bundle extraInfo=marker.getExtraInfo();
+            personpic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(main.this, FriendProfile.class);
+                    Bundle args = new Bundle();
+                    args.putString("username", extraInfo.getString("username"));
+                    intent.putExtras(args);
+                    startActivity(intent);
+                }
+            });
+
+
+//显示InfoWindow
+//            mBaiduMap.showInfoWindow(mInfoWindow);
+//显示InfoWindow
+            mBaiduMap.showInfoWindow(mInfoWindow);
+
+            return true;
+
+        }
+    }
+
+    private class MyConnectionStatusListener implements RongIMClient.ConnectionStatusListener {
+        @Override
+        public void onChanged(ConnectionStatus connectionStatus) {
+            switch (connectionStatus) {
+                case CONNECTED://连接成功。
+//                    Log.e("hechao", "CONNECTED");
+                    break;
+                case DISCONNECTED://断开连接。
+                    Log.e("hechao", "DISCONNECTED");
+                    break;
+                case CONNECTING://连接中。
+                    Log.e("hechao", "CONNECTING");
+                    break;
+                case NETWORK_UNAVAILABLE://网络不可用。
+                    Log.e("hechao", "NETWORK_UNAVAILABLE");
+                    break;
+                case KICKED_OFFLINE_BY_OTHER_CLIENT://用户账户在其他设备登录，本机会被踢掉线
+                    Log.e("hechao", "用户账户在其他设备登录，本机会被踢掉线");
+                    break;
+            }
+        }
     }
 
 
@@ -112,8 +260,8 @@ public class main extends Activity {
         client.post(url, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                String response=new String(bytes);
-                Log.e("hechao",response);
+                String response = new String(bytes);
+                Log.e("hechao", response);
             }
 
             @Override
@@ -144,6 +292,8 @@ public class main extends Activity {
                 @Override
                 public void onSuccess(String s) {
                     Toast.makeText(main.this, "成功登陆", Toast.LENGTH_SHORT).show();
+
+
                 }
 
                 @Override
@@ -172,6 +322,13 @@ public class main extends Activity {
 //        LocationClient定位配置
         initLocationClient();
         initTimer();
+
+        initOnline();
+    }
+
+    void initOnline() {
+
+
     }
 
 
@@ -232,15 +389,37 @@ public class main extends Activity {
     double totalDistance = 0;
     TextView speed;
 
+    JSONArray jsonArray = new JSONArray();
+
     private class MyLocationListener implements BDLocationListener {
 
         public void onReceiveLocation(BDLocation location) {
 //            Log.e("hechao", "onReceive...");
             // map view 销毁后不在处理新接收的位置
+
+            App.x = location.getLatitude();
+            App.y = location.getLongitude();
+            AsyncHttpClient client = new AsyncHttpClient();
+            RequestParams params = new RequestParams();
+            String url = "http://" + App.ip + "/chat/onlinelist.php?" + "username=" + App.username + "&x=" + App.x + "&y=" + App.y;
+            client.get(url, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int i, Header[] headers, byte[] bytes) {
+//                    Log.e("hechao", "位置已上传：username=" + App.username + "&x=" + App.x + "&y=" + App.y);
+                }
+
+                @Override
+                public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+
+                }
+            });
+
+
             if (location == null || mMapView == null) {
                 Log.e("hechao", "location == null || mMapView == null ");
                 return;
             }
+
 
             if (pts.size() > 1) {
                 if (pts.get(pts.size() - 1).latitude != location.getLatitude() ||
@@ -276,27 +455,97 @@ public class main extends Activity {
 //            mylocation.setText(location.getAddrStr());
 
 
+            url = "http://" + App.ip + "/chat/getAllOnline.php";
+            client.get(url, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int i, Header[] headers, byte[] bytes) {
+
+                    String response = new String(bytes);
+                    try {
+                        jsonArray = new JSONArray(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    try {
+                        JSONArray jarr = new JSONArray(response);
+                        for (int k = 0; k < jarr.length(); k++) {
+
+                            JSONObject json = (JSONObject) jarr.get(k);
+                            final String username = json.getString("username");
+                            double x = json.getDouble("x");
+                            double y = json.getDouble("y");
+
+                            LatLng l = new LatLng(x, y);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("username", username);
+                            OverlayOptions option = new MarkerOptions().position(l).icon(bitmap).extraInfo(bundle);
+
+                            mBaiduMap.addOverlay(option);
+
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+
+                }
+
+
+            });
+
+
             //标出当前位置
             point = new LatLng(location.getLatitude(), location.getLongitude());
 
 //            Log.e("hechao", i + point.toString());
             i++;
-//            OverlayOptions option = new MarkerOptions().position(point).icon(bitmap);
-//            Toast.makeText(getApplicationContext(), "第" + i + "次定位" + point.toString(), Toast.LENGTH_SHORT).show();
-//            mBaiduMap.addOverlay(option);
-//            mMapView.removeAllViews();
+
+//
+//            Log.e("hechao", First + "");
+//            if (First) {
+//                Log.e("hechao", jsonArray.toString());
+//                for (int i = 0; i < jsonArray.length(); i++) {
+//                    try {
+////                        Log.e("hechao", jsonArray.toString());
+//                        JSONObject json = (JSONObject) jsonArray.get(i);
+//                        String username = json.getString("username");
+//                        double x = json.getDouble("x");
+//                        double y = json.getDouble("y");
+//
+//                        Log.e("hechao", username + x + " " + y);
+//                        LatLng l = new LatLng(x, y);
+//                        OverlayOptions option = new MarkerOptions().position(l).icon(bitmap);
+//                        mBaiduMap.addOverlay(option);
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//                First = false;
+//            }
+
             long n = new Date().getTime();
             DecimalFormat df = new DecimalFormat("0.0 ");
             if (pts.size() >= 4) {
                 double d = com.baidu.mapapi.utils.DistanceUtil.getDistance(pts.get(pts.size() - 1), point);
                 totalDistance += d;
-                Log.e("hechao", "跑了 " + totalDistance + " 米");
+//                Log.e("hechao", "跑了 " + totalDistance + " 米");
 //                Toast.makeText(getApplicationContext(), "第" + i + "次跑了 " + d + " 米", Toast.LENGTH_SHORT).show();
 //                Toast.makeText(getApplicationContext(), "跑了 " + totalDistance + " 米", Toast.LENGTH_SHORT).show();
                 textView.setText("完成了： " + df.format(totalDistance) + " 米");
                 int min = ((int) ((n - currentTime) / 1000) / 60);
                 int sec = (int) ((n - currentTime) / 1000 - min * 60);
-                time = min*60+sec;
+                time = min * 60 + sec;
                 speed1 = totalDistance / time;
                 speed.setText("时间：" + min + "min" + sec + "sec  \n" + "速度：" + (double) (Math.round(totalDistance / min * 100) / 100.0) + " 米/分钟");
                 OverlayOptions ooPolyline = new PolylineOptions().width(20).color(0xAAFF0000).points(pts);
@@ -342,7 +591,7 @@ public class main extends Activity {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
-        int span = 1000;
+        int span = 5000;
         option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setOpenGps(true);//可选，默认false,设置是否使用gps
@@ -379,7 +628,7 @@ public class main extends Activity {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
-        int span = 1000;
+        int span = 5000;
         option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setOpenGps(true);//可选，默认false,设置是否使用gps
