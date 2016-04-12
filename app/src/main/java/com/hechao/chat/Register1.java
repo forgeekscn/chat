@@ -26,7 +26,6 @@ import cz.msebera.android.httpclient.Header;
  */
 public class Register1 extends Activity {
 
-    String ip = "10.176.172.177";
 
     @InjectView(R.id.username)
     EditText username;
@@ -70,7 +69,7 @@ public class Register1 extends Activity {
 //                    RequestParams params = new RequestParams();
 //                    params.add("username", user_name);
 //                    params.add("password", pass_word);
-            String url = "http://"+ip+"/chat/reg.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
+            String url = "http://"+App.ip+"/chat/reg.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
             Log.e("hechao", url);
             client.get(url, new AsyncHttpResponseHandler() {
                 @Override

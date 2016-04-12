@@ -36,7 +36,7 @@ public class AddFriendActivity extends Activity {
 
                 if(!friendName.getText().toString().equals("")){
                     AsyncHttpClient client= new AsyncHttpClient();
-                    String url="http://10.176.137.250/chat/addFriend.php?username="+App.username+"&target="+friendName.getText().toString();
+                    String url="http://"+App.ip+"/chat/addFriend.php?username="+App.username+"&target="+friendName.getText().toString();
                     Log.e("hechao",url);
                     client.get(url,new AsyncHttpResponseHandler() {
                         @Override
@@ -60,7 +60,6 @@ public class AddFriendActivity extends Activity {
 
                         @Override
                         public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-
                             Log.e("hechao","error  net ");
                         }
                     });

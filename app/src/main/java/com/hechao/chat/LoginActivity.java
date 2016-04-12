@@ -92,7 +92,6 @@ public class LoginActivity extends Activity {
 
     SensorManager sensorManager;
     StationData stationData = new StationData();
-    private String ip ="10.176.172.177";
 
 
     @Override
@@ -432,7 +431,7 @@ public class LoginActivity extends Activity {
 
 
             AsyncHttpClient client = new AsyncHttpClient();
-            String url = "http://" + ip + "/chat/login.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
+            String url = "http://" + App.ip + "/chat/login.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
             Log.e("hechao", url);
             client.get(url, new AsyncHttpResponseHandler() {
                 @Override

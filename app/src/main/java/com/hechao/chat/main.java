@@ -24,6 +24,9 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.route.TransitRouteLine;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
@@ -62,6 +66,8 @@ public class main extends Activity {
 
     @InjectView(R.id.myrun)
     ImageButton myrun;
+    double speed1 = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +98,36 @@ public class main extends Activity {
     }
 
 
+    @OnClick(R.id.stop)
+    void stop() {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.add("speed", speed1 + "");
+        params.add("far", totalDistance + "");
+        params.add("time", time + "");
+        params.add("username", App.username);
+        String url = "http://" + App.ip + "/chat/saveRecord.php";
+
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                String response=new String(bytes);
+                Log.e("hechao",response);
+            }
+
+            @Override
+            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+
+            }
+
+        });
 
 
+    }
 
+
+    double time = 0;
 
     /**
      * RongIM登录
@@ -134,14 +167,8 @@ public class main extends Activity {
     }
 
 
-
-
-
-
-
-
     @OnClick(R.id.start)
-    void start(){
+    void start() {
 //        LocationClient定位配置
         initLocationClient();
         initTimer();
@@ -151,7 +178,7 @@ public class main extends Activity {
     @OnClick(R.id.myrun)
     void setMyrun() {
 
-        Intent intent= new Intent(main.this,Myrun.class) ;
+        Intent intent = new Intent(main.this, Myrun.class);
         startActivity(intent);
 
     }
@@ -186,14 +213,12 @@ public class main extends Activity {
     }
 
 
-
     @OnClick(R.id.friend)
-    void friend(){
-        Intent intent= new Intent(main.this,FriendStatusActivity.class);
+    void friend() {
+        Intent intent = new Intent(main.this, FriendStatusActivity.class);
         startActivity(intent);
 
     }
-
 
 
     /**
@@ -262,7 +287,7 @@ public class main extends Activity {
 //            mMapView.removeAllViews();
             long n = new Date().getTime();
             DecimalFormat df = new DecimalFormat("0.0 ");
-            if (pts.size() >= 2) {
+            if (pts.size() >= 4) {
                 double d = com.baidu.mapapi.utils.DistanceUtil.getDistance(pts.get(pts.size() - 1), point);
                 totalDistance += d;
                 Log.e("hechao", "跑了 " + totalDistance + " 米");
@@ -271,6 +296,8 @@ public class main extends Activity {
                 textView.setText("完成了： " + df.format(totalDistance) + " 米");
                 int min = ((int) ((n - currentTime) / 1000) / 60);
                 int sec = (int) ((n - currentTime) / 1000 - min * 60);
+                time = min*60+sec;
+                speed1 = totalDistance / time;
                 speed.setText("时间：" + min + "min" + sec + "sec  \n" + "速度：" + (double) (Math.round(totalDistance / min * 100) / 100.0) + " 米/分钟");
                 OverlayOptions ooPolyline = new PolylineOptions().width(20).color(0xAAFF0000).points(pts);
                 //添加到地图

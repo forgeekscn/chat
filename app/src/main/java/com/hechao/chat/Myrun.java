@@ -5,7 +5,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +20,7 @@ import java.io.FileNotFoundException;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by Administrator on 2016/4/9.
@@ -28,6 +36,52 @@ public class Myrun extends Activity {
         setContentView(R.layout.myrun);
 
         ButterKnife.inject(Myrun.this);
+
+        initData();
+
+
+    }
+
+    private void initData() {
+
+        AsyncHttpClient client= new AsyncHttpClient();
+        String url="http://"+App.ip+"/chat/getAllUserInfor.php?username="+App.username;
+
+        client.get(url, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+
+                String response= new String(bytes);
+                try {
+                    JSONObject json=new JSONObject(response);
+                    ((Button)(findViewById(R.id.a1)) ).setText(json.getDouble("TOTALDISTANCE")+"");
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                ((Button)(findViewById(R.id.a2)) ).setText(response);
+                ((Button)(findViewById(R.id.a3)) ).setText("");
+                ((Button)(findViewById(R.id.a4)) ).setText("");
+                ((Button)(findViewById(R.id.a5)) ).setText("");
+            }
+
+            @Override
+            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+
+            }
+                
+        });
+
+//
+//        ((Button)(findViewById(R.id.a1)) ).setText("");
+//        ((Button)(findViewById(R.id.a2)) ).setText("");
+//        ((Button)(findViewById(R.id.a3)) ).setText("");
+//        ((Button)(findViewById(R.id.a4)) ).setText("");
+//        ((Button)(findViewById(R.id.a5)) ).setText("");
+
 
     }
 
