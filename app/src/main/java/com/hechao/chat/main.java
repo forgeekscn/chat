@@ -4,6 +4,8 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -93,6 +95,9 @@ public class main extends Activity {
     private boolean isstoped = false;
     private boolean isSwitched = false;
     private boolean runningstatus = false;
+    private ImageView personpic;
+    private TextView personname;
+    private TextView personinfo;
 
 
     @Override
@@ -173,7 +178,7 @@ public class main extends Activity {
 
         @Override
         public boolean onMarkerClick(Marker marker) {
-            Toast.makeText(main.this, "打个招呼", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(main.this, "打个招呼", Toast.LENGTH_SHORT).show();
 
             Button button = new Button(getApplicationContext());
             button.setBackgroundResource(R.drawable.popup);
@@ -205,11 +210,22 @@ public class main extends Activity {
 //创建InfoWindow , 传入 view， 地理坐标， y 轴偏移量
             InfoWindow mInfoWindow = new InfoWindow(linlayout, pt, -47);
 
-            ImageView personpic = (ImageView) linlayout.findViewById(R.id.personpic);
-            TextView personname = (TextView) linlayout.findViewById(R.id.personname);
-            TextView personinfo = (TextView) linlayout.findViewById(R.id.personinfo);
+            personpic = (ImageView) linlayout.findViewById(R.id.personpic);
+            personname = (TextView) linlayout.findViewById(R.id.personname);
+            personinfo = (TextView) linlayout.findViewById(R.id.personinfo);
 
             final Bundle extraInfo = marker.getExtraInfo();
+
+            try {
+                setImage("http://" + App.ip + "/chat/pic/" + extraInfo.getString("username") + ".png");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            personname.setText(extraInfo.getString("name"));
+//            personname.setText("呵呵哒");
+
+            personinfo.setText("瞄下ta的主页");
             personpic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -230,6 +246,29 @@ public class main extends Activity {
             return true;
 
         }
+    }
+
+
+    void setImage(String address) throws Exception {
+        //通过代码 模拟器浏览器访问图片的流程
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        client.get(address, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                personpic.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+
+            }
+        });
+
+
     }
 
     private class MyConnectionStatusListener implements RongIMClient.ConnectionStatusListener {
@@ -320,9 +359,9 @@ public class main extends Activity {
 
             AsyncHttpClient client = new AsyncHttpClient();
             RequestParams params = new RequestParams();
-            params.add("speed", (int)speed1 + "");
-            params.add("far", (int)totalDistance + "");
-            params.add("time", (int)time + "");
+            params.add("speed", (int) speed1 + "");
+            params.add("far", (int) totalDistance + "");
+            params.add("time", (int) time + "");
             params.add("username", App.username);
             String url = "http://" + App.ip + "/chat/saveRecord.php";
 
@@ -331,7 +370,7 @@ public class main extends Activity {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
                     String response = new String(bytes);
-                    Log.e("hechao", response);
+                    Log.e("hechao", "saverecord success " + response);
                 }
 
                 @Override
@@ -347,7 +386,7 @@ public class main extends Activity {
             Window window = alertDialog.getWindow();
             window.setContentView(R.layout.dialog_main_info);
             TextView tv_title = (TextView) window.findViewById(R.id.information);
-            tv_title.setText("恭喜你完成本次跑步！！！ \n \n您这次共跑了" + (int)totalDistance + "米，平均速度为" + (int)speed1 + "千米每小时，用时" + (int) (time / 60) + "分" + ((int) time - (int) (time / 60)) + "秒 \n \n");
+            tv_title.setText("恭喜你完成本次跑步！！！ \n \n您这次共跑了" + (int) totalDistance + "米，平均速度为" + (int) speed1 + "千米每小时，用时" + (int) (time / 60) + "分" + ((int) time - (int) (time / 60)) + "秒 \n \n");
 
 
             speed1 = 0;
@@ -512,38 +551,42 @@ public class main extends Activity {
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
 
                 //显示活跃用户
-                String url = "http://" + App.ip + "/chat/getAllOnline.php";
-                client.get(url, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                        String response = new String(bytes);
-                        try {
-                            jsonArray = new JSONArray(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            JSONArray jarr = new JSONArray(response);
-                            for (int k = 0; k < jarr.length(); k++) {
-                                JSONObject json = (JSONObject) jarr.get(k);
-                                final String username = json.getString("username");
-                                double x = json.getDouble("x");
-                                double y = json.getDouble("y");
-                                LatLng l = new LatLng(x, y);
-                                Bundle bundle = new Bundle();
-                                bundle.putString("username", username);
-                                OverlayOptions option = new MarkerOptions().position(l).icon(bitmap).extraInfo(bundle);
-                                mBaiduMap.addOverlay(option);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                    }
-                });
+//                String url = "http://" + App.ip + "/chat/getAllOnline.php";
+//                client.get(url, new AsyncHttpResponseHandler() {
+//                    @Override
+//                    public void onSuccess(int i, Header[] headers, byte[] bytes) {
+//                        String response = new String(bytes);
+//                        try {
+//                            jsonArray = new JSONArray(response);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                        try {
+//                            JSONArray jarr = new JSONArray(response);
+//                            for (int k = 0; k < jarr.length(); k++) {
+//                                JSONObject json = (JSONObject) jarr.get(k);
+//                                final String username = json.getString("username");
+//                                double x = json.getDouble("x");
+//                                double y = json.getDouble("y");
+//                                String name = json.getString("name");
+//                                LatLng l = new LatLng(x, y);
+//                                Bundle bundle = new Bundle();
+//
+//                                bundle.putString("username", username);
+//                                bundle.putString("name", name);
+//
+//                                OverlayOptions option = new MarkerOptions().position(l).icon(bitmap).extraInfo(bundle);
+//                                mBaiduMap.addOverlay(option);
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+//                    }
+//                });
 
 
             } else {
@@ -596,14 +639,14 @@ public class main extends Activity {
 //                Toast.makeText(getApplicationContext(), "第" + i + "次跑了 " + d + " 米", Toast.LENGTH_SHORT).show();
 //                Toast.makeText(getApplicationContext(), "跑了 " + totalDistance + " 米", Toast.LENGTH_SHORT).show();
 
-                textView.setText("完成了： " + (int)totalDistance + " 米");
+                textView.setText("完成了： " + (int) totalDistance + " 米");
 
                 int min = ((int) ((n - currentTime) / 1000) / 60);
                 int sec = (int) ((n - currentTime) / 1000 - min * 60);
                 time = min * 60 + sec;
                 speed1 = totalDistance / time;
 
-                speed.setText("时间：" + min + "min" + sec + "sec  \n" + "速度：" + (int)(Math.round(totalDistance / min * 100) / 100.0) + " 米/分钟");
+                speed.setText("时间：" + min + "min" + sec + "sec  \n" + "速度：" + (int) (Math.round(totalDistance / min * 100) / 100.0) + " 米/分钟");
 
                 OverlayOptions ooPolyline = new PolylineOptions().width(20).color(0xAAFF0000).points(pts);
                 //添加到地图
@@ -707,7 +750,7 @@ public class main extends Activity {
 
         //显示活跃用户
         String url = "http://" + App.ip + "/chat/getAllOnline.php";
-        AsyncHttpClient client= new AsyncHttpClient();
+        AsyncHttpClient client = new AsyncHttpClient();
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
@@ -724,8 +767,10 @@ public class main extends Activity {
                         final String username = json.getString("username");
                         double x = json.getDouble("x");
                         double y = json.getDouble("y");
+                        String name=json.getString("name");
                         LatLng l = new LatLng(x, y);
                         Bundle bundle = new Bundle();
+                        bundle.putString("name",name);
                         bundle.putString("username", username);
                         OverlayOptions option = new MarkerOptions().position(l).icon(bitmap).extraInfo(bundle);
                         mBaiduMap.addOverlay(option);
@@ -739,11 +784,6 @@ public class main extends Activity {
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
             }
         });
-
-
-
-
-
 
 
         //开始定位

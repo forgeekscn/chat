@@ -79,13 +79,6 @@ public class Myrun extends Activity {
         });
 
 
-//        URL url = new URL(address);
-//        HttpURLConnection conn =  (HttpURLConnection) url.openConnection();
-//        conn.setRequestMethod("GET");
-//        conn.setConnectTimeout(5000);
-//        //获取服务器返回回来的流
-//        InputStream is = conn.getInputStream();
-//        byte[] imagebytes = getBytes(is);
     }
 
 
