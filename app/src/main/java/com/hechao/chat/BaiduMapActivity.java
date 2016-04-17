@@ -94,7 +94,7 @@ public class BaiduMapActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layout.baidumap);
+        setContentView(R.layout.baidumap);
         mMapView = (MapView) findViewById(id.bmapView);
 //        设置地图形式
         setMapType();

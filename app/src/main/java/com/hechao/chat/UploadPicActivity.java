@@ -26,6 +26,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -50,7 +52,6 @@ public class UploadPicActivity extends Activity {
     private int galley_code = 2;
     private int crop_code = 3;
 
-    String ip = "10.176.172.177";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class UploadPicActivity extends Activity {
 
     private void send(Bitmap bm) {
 
+        Log.e("hechao","sending...");
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 60, stream);
         byte[] bytes = stream.toByteArray();
@@ -88,9 +90,11 @@ public class UploadPicActivity extends Activity {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
         params.add("img", img);
+        params.add("username",App.username);
 
 
-        client.post("http://"+ip+"/chat/upload.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://"+App.ip+"/chat/upload.php", params, new AsyncHttpResponseHandler() {
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(UploadPicActivity.this, "success", Toast.LENGTH_SHORT).show();
@@ -100,8 +104,11 @@ public class UploadPicActivity extends Activity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Toast.makeText(UploadPicActivity.this, "no success", Toast.LENGTH_SHORT).show();
             }
+
         });
 
+
+        finish();
 
     }
 
@@ -133,7 +140,7 @@ public class UploadPicActivity extends Activity {
         if (!tempDir.exists()) {
             tempDir.mkdir();
         }
-        File imag = new File(tempDir, "temp.png");
+        File imag = new File(tempDir, App.username+"temp.png");
         try {
 
             FileOutputStream fileOutputStream = new FileOutputStream(imag);
@@ -154,6 +161,38 @@ public class UploadPicActivity extends Activity {
 
 
     }
+
+
+
+
+    public static byte[] getBytes(InputStream is) throws Exception{
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        while((len = is.read(buffer))!=-1){
+            bos.write(buffer, 0, len);
+        }
+        is.close();
+        bos.flush();
+        byte[] result = bos.toByteArray();
+//        System.out.println(new String(result));
+        return  result;
+    }
+
+
+    public static Bitmap getImage(String address) throws Exception{
+        //通过代码 模拟器浏览器访问图片的流程
+        URL url = new URL(address);
+        HttpURLConnection conn =  (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setConnectTimeout(5000);
+        //获取服务器返回回来的流
+        InputStream is = conn.getInputStream();
+        byte[] imagebytes = getBytes(is);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imagebytes, 0, imagebytes.length);
+        return bitmap;
+    }
+
 
 
     @Override

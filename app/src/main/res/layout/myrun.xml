@@ -18,71 +18,49 @@
             android:id="@+id/profilePic"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginLeft="120dp"
             android:scaleType="fitXY"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center_horizontal|center"
             android:src="@drawable/myrun" />
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="奔跑的少年"
-            android:textSize="30dp" />
 
         <ImageView
             android:id="@+id/profile"
             android:layout_width="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/ic_brush_black_48dp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/a1"
-        android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="#722"
-        android:elevation="30dp"
-        android:text="总里程：18.3 km" />
-
-    <Button
-        android:id="@+id/a2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="#722"
-        android:elevation="30dp"
-        android:text="总时间：5.2 hour" />
-
-    <Button
-        android:id="@+id/a3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="#722"
-        android:elevation="30dp"
-        android:text="消耗的大卡：10233 卡" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/a4"
-
-        android:layout_margin="5dp"
+        android:id="@+id/seemydata"
+        android:text="我的主页"
         android:background="#722"
-        android:elevation="30dp"
-        android:text="跑步次数：13 次" />
+        />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:id="@+id/runrecord"
+        android:text="我的跑步记录"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:background="#722"
+        />
 
-        android:id="@+id/a5"
-        android:elevation="30dp"
-        android:text="最快速度：8.2 km/h" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/setting"
+        android:text="设置"
+        android:background="#722"
+        />
+
+
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:background="#822000"
@@ -8,11 +9,12 @@
     <com.baidu.mapapi.map.MapView
         android:id="@+id/bmapView"
         android:layout_width="fill_parent"
-        android:layout_height="365dp"
+        android:layout_height="360dp"
         android:clickable="true"
-        android:elevation="20dp" />
+        android:elevation="20dp"></com.baidu.mapapi.map.MapView>
 
-    <LinearLayout
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:orientation="vertical">
@@ -22,36 +24,43 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:text="显示周边加油站" />-->
-
-        <TextView
-            android:id="@+id/totalDistance"
+        <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            android:layout_height="wrap_content"
-            android:text="完成了："
-            android:textColor="#000"
-            android:textSize="20dp" />
+            <TextView
+                android:id="@+id/totalDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/switchMap"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="切换到经典视图"
+                android:textColor="#1b1"
+                />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/speed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="时间：    速度："
             android:textColor="#000"
+            android:text="点击奔跑按钮开始 再次点击可停止"
             android:textSize="20dp" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="stop"
-            android:id="@+id/stop"
-            ></Button>
 
     </LinearLayout>
 
+
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:elevation="20dp"
 
@@ -60,9 +69,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_margin="1dp"
             android:orientation="horizontal"
-            android:padding="1dp">
+            >
 
             <ImageButton
 
@@ -79,6 +87,15 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="50dp"
                 android:background="@drawable/start" />
+
+            <!--<com.hechao.chat.GifView-->
+            <!--android:id="@+id/start"-->
+            <!--android:layout_marginLeft="50dp"-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--app:src="@drawable/disuxiaoshuo" />-->
+
 
             <ImageButton
                 android:id="@+id/friend"

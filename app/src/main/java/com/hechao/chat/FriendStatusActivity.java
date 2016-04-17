@@ -19,7 +19,7 @@ public class FriendStatusActivity extends Activity {
     @OnClick(R.id.runnersworld)
     void runnerworld() {
 
-        Intent intent = new Intent(FriendStatusActivity.this, RunnerWorld.class);
+        Intent intent = new Intent(FriendStatusActivity.this, ShareActivity.class);
         startActivity(intent);
 
     }

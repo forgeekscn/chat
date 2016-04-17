@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -14,8 +15,12 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -30,6 +35,7 @@ public class Myrun extends Activity {
     @InjectView(R.id.profilePic)
     ImageView profilePic;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,68 +43,77 @@ public class Myrun extends Activity {
 
         ButterKnife.inject(Myrun.this);
 
-        initData();
+//        initData();
+
+        try {
+            setImage("http://" + App.ip + "/chat/pic/" + App.username + ".png");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+
 
 
     }
 
-    private void initData() {
 
-        AsyncHttpClient client= new AsyncHttpClient();
-        String url="http://"+App.ip+"/chat/getAllUserInfor.php?username="+App.username;
+    void setImage(String address) throws Exception {
+        //通过代码 模拟器浏览器访问图片的流程
 
-        client.get(url, new AsyncHttpResponseHandler() {
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        client.get(address, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
 
-                String response= new String(bytes);
-                try {
-                    JSONObject json=new JSONObject(response);
-                    ((Button)(findViewById(R.id.a1)) ).setText(json.getDouble("TOTALDISTANCE")+"");
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-                ((Button)(findViewById(R.id.a2)) ).setText(response);
-                ((Button)(findViewById(R.id.a3)) ).setText("");
-                ((Button)(findViewById(R.id.a4)) ).setText("");
-                ((Button)(findViewById(R.id.a5)) ).setText("");
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                profilePic.setImageBitmap(bitmap);
             }
 
             @Override
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
 
             }
-                
         });
 
-//
-//        ((Button)(findViewById(R.id.a1)) ).setText("");
-//        ((Button)(findViewById(R.id.a2)) ).setText("");
-//        ((Button)(findViewById(R.id.a3)) ).setText("");
-//        ((Button)(findViewById(R.id.a4)) ).setText("");
-//        ((Button)(findViewById(R.id.a5)) ).setText("");
 
-
+//        URL url = new URL(address);
+//        HttpURLConnection conn =  (HttpURLConnection) url.openConnection();
+//        conn.setRequestMethod("GET");
+//        conn.setConnectTimeout(5000);
+//        //获取服务器返回回来的流
+//        InputStream is = conn.getInputStream();
+//        byte[] imagebytes = getBytes(is);
     }
 
 
-    @OnClick(R.id.profilePic)
-    void profilePic(){
+//
+//    @OnClick(R.id.profilePic)
+//    void profilePic(){
+//
+////        Bitmap bitmap = getLoacalBitmap("/mnt/sdcard/aaa/hhh/temp.png"); //从本地取图片(在cdcard中获取)  //
+////        profilePic.setImageBitmap(bitmap); //设置Bitmap
+//
+//        Intent intent = new Intent(Myrun.this,UploadPicActivity.class);
+//        startActivity(intent);
+//
+//    }
 
-        Bitmap bitmap = getLoacalBitmap("/mnt/sdcard/aaa/hhh/temp.png"); //从本地取图片(在cdcard中获取)  //
-        profilePic.setImageBitmap(bitmap); //设置Bitmap
 
-        Intent intent = new Intent(Myrun.this,UploadPicActivity.class);
+    @OnClick(R.id.seemydata)
+    void setMyData() {
+
+        Intent intent = new Intent(Myrun.this, Myprofile.class);
         startActivity(intent);
 
     }
 
+
     /**
      * 加载本地图片
+     *
      * @param url
      * @return
      */
@@ -113,8 +128,8 @@ public class Myrun extends Activity {
     }
 
     @OnClick(R.id.profile)
-    void editProfile(){
-        Intent intent= new Intent(Myrun.this,EditProfile.class);
+    void editProfile() {
+        Intent intent = new Intent(Myrun.this, EditProfile.class);
         startActivity(intent);
 
     }

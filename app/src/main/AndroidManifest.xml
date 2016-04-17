@@ -73,6 +73,11 @@
         <activity android:name=".FriendListActivity" />
         <!-- 对话 -->
         <activity android:name=".Register1" />
+
+        <activity android:name=".ShareActivity"/>
+        <activity android:name=".WriteSharePageActivity"/>
+
+        <activity android:name=".Myprofile"/>
         <activity android:name=".ConversationAcivity">
             <intent-filter>
 
