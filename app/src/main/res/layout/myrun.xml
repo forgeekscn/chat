@@ -60,6 +60,14 @@
         android:text="设置"
         android:background="#722"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:id="@+id/logout"
+        android:text="退出"
+        android:background="#722"
+        />
 
 
 

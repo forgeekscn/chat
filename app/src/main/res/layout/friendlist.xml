@@ -2,18 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="#822"
     android:layout_height="match_parent">
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="刷新好友列表"
+        android:background="#822"
+        android:text="好友列表"
         android:id="@+id/refresh" />
+
 
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/friendlist1"
+        android:padding="5dp"
 
         >
 

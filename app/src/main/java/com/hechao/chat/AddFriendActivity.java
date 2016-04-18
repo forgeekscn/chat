@@ -36,7 +36,7 @@ public class AddFriendActivity extends Activity {
 
                 if(!friendName.getText().toString().equals("")){
                     AsyncHttpClient client= new AsyncHttpClient();
-                    String url="http://"+App.ip+"/chat/addFriend.php?username="+App.username+"&target="+friendName.getText().toString();
+                    String url="http://"+App.ip+"/chat/addFriend1.php?username="+App.username+"&target="+friendName.getText().toString();
                     Log.e("hechao",url);
                     client.get(url,new AsyncHttpResponseHandler() {
                         @Override

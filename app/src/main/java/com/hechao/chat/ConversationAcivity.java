@@ -1,8 +1,11 @@
 package com.hechao.chat;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+
+import io.rong.imkit.RongIM;
 
 /**
  * 私聊窗口
@@ -16,7 +19,6 @@ public class ConversationAcivity extends ActionBarActivity {
 
         setContentView(R.layout.conversation);
 
-        setTitle("");
 
     }
 }

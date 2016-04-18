@@ -1,6 +1,7 @@
 package com.hechao.chat;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -55,8 +56,32 @@ public class FriendListActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String target = (String) listView.getAdapter().getItem(position);
-                RongIM.getInstance().startPrivateChat(FriendListActivity.this, target, null);
+
+
+                AsyncHttpClient client= new AsyncHttpClient();
+                final String string = friendList.get(position);
+                String url="http://"+App.ip+"/chat/getname.php?username="+string;
+                client.get(url, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int i, Header[] headers, byte[] bytes) {
+
+
+                        Intent intent = new Intent(FriendListActivity.this,FriendProfile.class);
+                        Bundle args = new Bundle();
+                        args.putString("username",string);
+                        args.putString("name",new String(bytes) );
+                        intent.putExtras(args);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+
+                    }
+                });
+
+//                String target = (String) listView.getAdapter().getItem(position);
+//                RongIM.getInstance().startPrivateChat(FriendListActivity.this, target, null);
             }
         });
 

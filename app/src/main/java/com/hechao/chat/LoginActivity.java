@@ -1,7 +1,9 @@
 package com.hechao.chat;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
@@ -59,6 +61,8 @@ public class LoginActivity extends Activity {
     @InjectView(R.id.password)
     EditText password;
 
+    SharedPreferences sharedPreferences;
+
     @InjectView(R.id.login)
     TextView login;
 //    @InjectView(R.id.register)
@@ -100,10 +104,24 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login1);
 
         //crash处理
-//        bugly();
+        bugly();
 
         //view注解
         ButterKnife.inject(this);
+
+
+        sharedPreferences=this.getSharedPreferences("sp", Context.MODE_PRIVATE);
+
+        if(sharedPreferences.getBoolean("isloged",false)){
+            App.isLogin=true;
+            App.token=sharedPreferences.getString("token","");
+            App.username=sharedPreferences.getString("username","");
+
+            Intent intent= new Intent(LoginActivity.this,main.class);
+            startActivity(intent);
+            finish();
+
+        }
 
 
         //传感器测试
@@ -278,22 +296,22 @@ public class LoginActivity extends Activity {
 //                Log.e("hechao", "error");
 //            }
 //        });
-
-
 //
-//        /**************** 查账户信息调用示例 *****************/
-//        try {
-//            String apikey = "34ca0f7732b7f0718ad418e3e7d6ed08";
-//            //修改为您要发送的手机号
-//            String mobile = URLEncoder.encode("13720308660", "UTF-8");
-//            Log.e("hechao", "userinfo->" + YunPianAPI.getUserInfo(apikey));
-//
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
+////
+////
+////        /**************** 查账户信息调用示例 *****************/
+////        try {
+////            String apikey = "34ca0f7732b7f0718ad418e3e7d6ed08";
+////            //修改为您要发送的手机号
+////            String mobile = URLEncoder.encode("13720308660", "UTF-8");
+////            Log.e("hechao", "userinfo->" + YunPianAPI.getUserInfo(apikey));
+////
+////
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////        } catch (URISyntaxException e) {
+////            e.printStackTrace();
+////        }
 //
 //
 //    }
@@ -430,6 +448,12 @@ public class LoginActivity extends Activity {
 //            String ip = (new NetworkInterface()).getInterfaceAddresses();
 
 
+            sharedPreferences.edit().putBoolean("isloged", true).commit();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username", username.getText().toString());
+            editor.commit();
+
+
             AsyncHttpClient client = new AsyncHttpClient();
             String url = "http://" + App.ip + "/chat/login.php?username=" + username.getText().toString() + "&password=" + password.getText().toString();
             Log.e("hechao", url);
@@ -444,6 +468,7 @@ public class LoginActivity extends Activity {
                     } else {
                         Log.e("hechao", "response:" + response);
                         App.token = response;
+                        sharedPreferences.edit().putString("token", response).commit();
                         App.username = username.getText().toString();
                         App.isLogin = true;
 

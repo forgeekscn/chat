@@ -77,6 +77,15 @@
         <activity android:name=".ShareActivity"/>
         <activity android:name=".WriteSharePageActivity"/>
 
+        <activity android:name=".SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
         <activity android:name=".Myprofile"/>
         <activity android:name=".ConversationAcivity">
             <intent-filter>
@@ -96,11 +105,11 @@
         <activity android:name=".BaiduMapActivity" />
         <!-- 注册 -->
         <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <!-- 定位 -->
         <service

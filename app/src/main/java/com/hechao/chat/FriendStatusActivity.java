@@ -51,6 +51,7 @@ public class FriendStatusActivity extends Activity {
 
         ButterKnife.inject(FriendStatusActivity.this);
 
+
     }
 
 

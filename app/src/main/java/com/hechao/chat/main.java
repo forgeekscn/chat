@@ -359,7 +359,7 @@ public class main extends Activity {
 
             AsyncHttpClient client = new AsyncHttpClient();
             RequestParams params = new RequestParams();
-            params.add("speed", (int) speed1 + "");
+            params.add("speed", speed1 + "");
             params.add("far", (int) totalDistance + "");
             params.add("time", (int) time + "");
             params.add("username", App.username);
@@ -386,7 +386,7 @@ public class main extends Activity {
             Window window = alertDialog.getWindow();
             window.setContentView(R.layout.dialog_main_info);
             TextView tv_title = (TextView) window.findViewById(R.id.information);
-            tv_title.setText("恭喜你完成本次跑步！！！ \n \n您这次共跑了" + (int) totalDistance + "米，平均速度为" + (int) speed1 + "千米每小时，用时" + (int) (time / 60) + "分" + ((int) time - (int) (time / 60)) + "秒 \n \n");
+            tv_title.setText("恭喜你完成本次跑步！！！ \n \n您这次共跑了" + (int) totalDistance + "米，平均速度为" + speed1 + "米每分钟，用时" + (int) (time / 60) + "分" + ((int) time - (int) (time / 60)) + "秒 \n \n");
 
 
             speed1 = 0;
@@ -644,9 +644,9 @@ public class main extends Activity {
                 int min = ((int) ((n - currentTime) / 1000) / 60);
                 int sec = (int) ((n - currentTime) / 1000 - min * 60);
                 time = min * 60 + sec;
-                speed1 = totalDistance / time;
+                speed1 = Math.round(totalDistance / time * 100) / 100.0*60;
 
-                speed.setText("时间：" + min + "min" + sec + "sec  \n" + "速度：" + (int) (Math.round(totalDistance / min * 100) / 100.0) + " 米/分钟");
+                speed.setText("时间：" + min + "min" + sec + "sec  \n" + "速度：" + speed1 + " 米/分钟");
 
                 OverlayOptions ooPolyline = new PolylineOptions().width(20).color(0xAAFF0000).points(pts);
                 //添加到地图
@@ -772,7 +772,7 @@ public class main extends Activity {
                         Bundle bundle = new Bundle();
                         bundle.putString("name",name);
                         bundle.putString("username", username);
-                        OverlayOptions option = new MarkerOptions().position(l).icon(bitmap).extraInfo(bundle);
+                        OverlayOptions option = new MarkerOptions().position(l).icon(bitmap).extraInfo(bundle).draggable(true);
                         mBaiduMap.addOverlay(option);
                     }
                 } catch (JSONException e) {

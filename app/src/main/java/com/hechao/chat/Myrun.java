@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
+import io.rong.imkit.RongIM;
 
 /**
  * Created by Administrator on 2016/4/9.
@@ -55,7 +56,17 @@ public class Myrun extends Activity {
 
 
 
+    }
 
+
+    @OnClick(R.id.logout)
+    void logout(){
+        App.username="";
+        App.isLogin=false;
+        Intent intent= new Intent(Myrun.this,LoginActivity.class);
+        startActivity(intent);
+        RongIM.getInstance().disconnect();
+        finish();
     }
 
 

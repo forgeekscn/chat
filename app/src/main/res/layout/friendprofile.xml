@@ -6,32 +6,81 @@
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/image456"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:src="@drawable/myrun"
-        android:layout_marginTop="100dp"/>
+        android:layout_marginTop="100dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/myrun" />
 
     <TextView
+        android:id="@+id/friendname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_margin="10dp"
-        android:id="@+id/friendname"
         android:layout_gravity="center_horizontal"
-        android:text="这是ta的主页" />
+        android:layout_margin="10dp"
+        android:text="这是ta的主页"
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:id="@+id/p_nicheng"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="昵称" />
+
+    <TextView
+        android:id="@+id/p_class"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="学院" />
+
+    <TextView
+        android:id="@+id/p_mywords"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="个人签名" />
+
+    <TextView
+        android:id="@+id/p_totaldistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="跑步总距离" />
+
+    <TextView
+        android:id="@+id/p_totaltime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="跑步总耗时" />
+
+    <TextView
+        android:id="@+id/p_totalCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="跑步总次数" />
+
+    <TextView
+        android:id="@+id/p_totalEnergy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="消耗的总能量（折合脂肪： 公斤）" />
+
 
     <Button
-        android:layout_width="match_parent"
         android:id="@+id/addfriend1"
-        android:layout_height="wrap_content"
-        android:text="添加为好友"
-        />
-    <Button
         android:layout_width="match_parent"
-        android:id="@+id/startprivate"
         android:layout_height="wrap_content"
-        android:text="发送消息"
-        />
+        android:background="#722"
+        android:text="添加为好友" />
+
+    <Button
+        android:id="@+id/startprivate"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:background="#722"
+        android:text="发送消息" />
 
 </LinearLayout>
