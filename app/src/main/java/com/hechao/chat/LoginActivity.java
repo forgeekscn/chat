@@ -61,7 +61,7 @@ public class LoginActivity extends Activity {
     @InjectView(R.id.password)
     EditText password;
 
-    SharedPreferences sharedPreferences;
+
 
     @InjectView(R.id.login)
     TextView login;
@@ -110,12 +110,12 @@ public class LoginActivity extends Activity {
         ButterKnife.inject(this);
 
 
-        sharedPreferences=this.getSharedPreferences("sp", Context.MODE_PRIVATE);
 
-        if(sharedPreferences.getBoolean("isloged",false)){
+
+        if(App.sharedPreferences.getBoolean("isloged",false)){
             App.isLogin=true;
-            App.token=sharedPreferences.getString("token","");
-            App.username=sharedPreferences.getString("username","");
+            App.token=App.sharedPreferences.getString("token","");
+            App.username=App.sharedPreferences.getString("username","");
 
             Intent intent= new Intent(LoginActivity.this,main.class);
             startActivity(intent);
@@ -448,8 +448,8 @@ public class LoginActivity extends Activity {
 //            String ip = (new NetworkInterface()).getInterfaceAddresses();
 
 
-            sharedPreferences.edit().putBoolean("isloged", true).commit();
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+            App.sharedPreferences.edit().putBoolean("isloged", true).commit();
+            SharedPreferences.Editor editor = App.sharedPreferences.edit();
             editor.putString("username", username.getText().toString());
             editor.commit();
 
@@ -468,7 +468,7 @@ public class LoginActivity extends Activity {
                     } else {
                         Log.e("hechao", "response:" + response);
                         App.token = response;
-                        sharedPreferences.edit().putString("token", response).commit();
+                        App.sharedPreferences.edit().putString("token", response).commit();
                         App.username = username.getText().toString();
                         App.isLogin = true;
 

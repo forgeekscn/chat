@@ -84,7 +84,7 @@ public class main extends Activity {
     private LatLng point = null;
     boolean isFirstLoc = true;
 
-    BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_marka);
+    BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_markc);
     BitmapDescriptor bitmap2 = BitmapDescriptorFactory.fromResource(R.drawable.icon_st);
     BitmapDescriptor bitmap3 = BitmapDescriptorFactory.fromResource(R.drawable.icon_markc);
     private TextView textView;
@@ -108,6 +108,7 @@ public class main extends Activity {
         ButterKnife.inject(main.this);
         //RongIM登录
         connect();
+        isFirstLoc=true;
         mMapView = (MapView) findViewById(R.id.bmapView);
 //        设置地图形式
         setMapType();
@@ -151,12 +152,10 @@ public class main extends Activity {
             public void onMapClick(LatLng latLng) {
 
                 mBaiduMap.hideInfoWindow();
-                Toast.makeText(main.this, "mapclick", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public boolean onMapPoiClick(MapPoi mapPoi) {
-                Toast.makeText(main.this, "mapPoiclick", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -547,7 +546,7 @@ public class main extends Activity {
                 isFirstLoc = false;
                 LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
                 MapStatus.Builder builder = new MapStatus.Builder();
-                builder.target(ll).zoom(16.7f);
+                builder.target(ll).zoom(18.1f);
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
 
                 //显示活跃用户
@@ -745,7 +744,7 @@ public class main extends Activity {
 
         LatLng ll = new LatLng(30.380489, 114.345394);
         MapStatus.Builder builder = new MapStatus.Builder();
-        builder.target(ll).zoom(16.7f);
+        builder.target(ll).zoom(18.1f);
         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
 
         //显示活跃用户

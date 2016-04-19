@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#822"
 
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
-
-    <TextView
+    <ListView
+        android:id="@+id/ranklistview"
+        android:background="#722"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="排行榜"
-        />
+        android:layout_height="match_parent"></ListView>
 
 </LinearLayout>

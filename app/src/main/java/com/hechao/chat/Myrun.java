@@ -61,12 +61,18 @@ public class Myrun extends Activity {
 
     @OnClick(R.id.logout)
     void logout(){
+
+        App.sharedPreferences.edit().putBoolean("isloged",false).commit();
+        App.sharedPreferences.edit().putString("username","").commit();
+        App.sharedPreferences.edit().putString("token","").commit();
+
         App.username="";
         App.isLogin=false;
         Intent intent= new Intent(Myrun.this,LoginActivity.class);
         startActivity(intent);
         RongIM.getInstance().disconnect();
         finish();
+
     }
 
 

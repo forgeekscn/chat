@@ -3,14 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#822"
+    android:padding="10dp"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/runnersworld"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
         android:layout_marginTop="100dp"
         android:background="#722"
         android:text="跑友圈" />

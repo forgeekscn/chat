@@ -44,14 +44,10 @@ public class FriendListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.friendlist);
-
         ButterKnife.inject(FriendListActivity.this);
-
         refreshFriendList();
         myAdapter = new MyAdapter(friendList, FriendListActivity.this);
-
         listView.setAdapter(myAdapter);
-
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

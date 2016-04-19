@@ -58,45 +58,46 @@ public class MyAdapter extends BaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.frienditem, null);
         final TextView friendItem = (TextView) view.findViewById(R.id.friendItemName);
-        final ImageView frienitempic = (ImageView) view.findViewById(R.id.friendItemPic);
+        friendItem.setText(friendList.get(position));
+//        final ImageView frienitempic = (ImageView) view.findViewById(R.id.friendItemPic);
 
-        String url1="http://"+App.ip+"/chat/getname.php?username="+friendList.get(position);
-        client.get(url1, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                String response=new String(bytes);
-                friendItem.setText(response);
-            }
+//        String url1="http://"+App.ip+"/chat/getname.php?username="+friendList.get(position);
+//        client.get(url1, new AsyncHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+//                String response=new String(bytes);
+//                friendItem.setText(response);
+//            }
+//
+//            @Override
+//            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+//
+//            }
+//        });
 
-            @Override
-            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+//        final String name = friendList.get(position);
+//        String url = "http://"+App.ip+"/chat/pic/"+friendList.get(position)+".png";
+//        client.get(url, new AsyncHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                frienitempic.setImageBitmap(bitmap);
+//            }
+//
+//            @Override
+//            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+//
+//            }
+//        });
+//
 
-            }
-        });
-
-        final String name = friendList.get(position);
-        String url = "http://"+App.ip+"/chat/pic/"+friendList.get(position)+".png";
-        client.get(url, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                frienitempic.setImageBitmap(bitmap);
-            }
-
-            @Override
-            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-
-            }
-        });
-
-
-        friendItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.e("hechao", name + "  to talk ?");
-            }
-        });
+//        friendItem.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Log.e("hechao", name + "  to talk ?");
+//            }
+//        });
 
         return view;
     }
