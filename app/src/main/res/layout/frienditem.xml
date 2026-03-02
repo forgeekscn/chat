@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_marginTop="5dp"
+    android:background="#722"
+    android:padding="5dp"
+    android:theme="@style/AppTheme"
+    android:layout_height="80dp">
+
+    <!--<ImageView-->
+        <!--android:layout_width="80dp"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:layout_height="80dp"-->
+        <!--android:id="@+id/friendItemPic"-->
+        <!--android:src="@drawable/myrun"/>-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:id="@+id/friendItemName"
+        android:clickable="true" />
+
+</LinearLayout>

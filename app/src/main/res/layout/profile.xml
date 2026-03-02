@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#822"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/photo123"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/myrun" />
+
+    <EditText
+        android:id="@+id/sexual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="性别" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="昵称" />
+
+    <EditText
+        android:id="@+id/height"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="身高" />
+
+    <EditText
+        android:id="@+id/weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="体重" />
+
+    <EditText
+        android:id="@+id/mywords"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="一句话自我介绍" />
+
+    <EditText
+        android:id="@+id/classname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="所在学院" />
+
+    <Button
+        android:id="@+id/finish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="修改完成" />
+
+
+</LinearLayout>
